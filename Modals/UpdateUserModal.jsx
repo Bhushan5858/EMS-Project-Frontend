@@ -7,7 +7,10 @@ import {
     Mail, 
     ShieldCheck, 
     Edit3,
-    ArrowRight
+    ArrowRight,
+    Lock,
+    Banknote,
+    Activity
 } from "lucide-react";
 
 /** Professional corporate-grade user update modal */
@@ -17,6 +20,9 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
         name: "",
         email: "",
         role: "employee",
+        password: "",
+        isActive: true,
+        salary: "",
     });
 
     useEffect(() => {
@@ -25,6 +31,9 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                 name: user.name || "",
                 email: user.email || "",
                 role: user.role || "employee",
+                password: "",
+                isActive: user.isActive !== undefined ? user.isActive : true,
+                salary: user.salary || "",
             });
         }
     }, [user]);
@@ -63,17 +72,17 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-8 space-y-6">
-                    <div className="space-y-5">
+                <form onSubmit={handleSubmit} className="p-8 space-y-6 overflow-y-auto max-h-[75vh]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Name */}
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Legal Name</label>
+                        <div className="space-y-1.5 md:col-span-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Identity</label>
                             <div className="relative">
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                                 <input
                                     type="text"
                                     placeholder="Enter full name"
-                                    className="w-full bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
+                                    className="w-full text-black bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
                                     value={formData.name}
                                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                     required
@@ -82,14 +91,14 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                         </div>
 
                         {/* Email */}
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Corporate Email</label>
+                        <div className="space-y-1.5 md:col-span-2">
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Terminal</label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                                 <input
                                     type="email"
                                     placeholder="user@ems.corp"
-                                    className="w-full bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
+                                    className="w-full text-black bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
                                     value={formData.email}
                                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                                     required
@@ -99,17 +108,63 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
 
                         {/* Role */}
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Authorization Tier</label>
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Authority Level</label>
                             <div className="relative">
                                 <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
                                 <select
-                                    className="w-full bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold appearance-none cursor-pointer"
+                                    className="w-full text-black bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold appearance-none cursor-pointer"
                                     value={formData.role}
                                     onChange={(e) => setFormData({ ...formData, role: e.target.value })}
                                 >
                                     <option value="employee">Standard Employee</option>
                                     <option value="manager">Lead Manager</option>
                                     <option value="admin">System Administrator</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {/* Password */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Password (Optional)</label>
+                            <div className="relative">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                                <input
+                                    type="password"
+                                    placeholder="Leave empty to keep unchanged"
+                                    className="w-full text-black bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Salary */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Salary</label>
+                            <div className="relative">
+                                <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                                <input
+                                    type="number"
+                                    placeholder="Base Salary"
+                                    className="w-full text-black bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
+                                    value={formData.salary}
+                                    onChange={(e) => setFormData({ ...formData, salary: e.target.value })}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Status (isActive) */}
+                        <div className="space-y-1.5">
+                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Account Status</label>
+                            <div className="relative">
+                                <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                                <select
+                                    className="w-full text-black bg-slate-50 border border-slate-200 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold appearance-none cursor-pointer"
+                                    value={formData.isActive ? "true" : "false"}
+                                    onChange={(e) => setFormData({ ...formData, isActive: e.target.value === "true" })}
+                                >
+                                    <option value="true">Active</option>
+                                    <option value="false">Inactive</option>
                                 </select>
                             </div>
                         </div>
@@ -126,9 +181,9 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-4 rounded-xl bg-slate-50 text-slate-400 font-bold text-xs tracking-widest uppercase hover:bg-slate-100 transition-all active:scale-95"
+                            className="flex-1 py-4 rounded-xl bg-red-600 text-black font-bold text-xs tracking-widest uppercase hover:bg-slate-100 transition-all active:scale-95"
                         >
-                            Cancel
+                            Dismiss Request
                         </button>
                     </div>
                 </form>

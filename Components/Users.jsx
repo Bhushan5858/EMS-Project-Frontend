@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { useAuthUserStore } from "../src/Store/useAuthUserStore";
-import UpdateUserModal from "../Modals/updateUser.Modal.jsx";
+import UpdateUserModal from "../Modals/UpdateUserModal.jsx";
 import AddUserModal from "../Modals/addUser.Modal.jsx";
-import DeleteUserModal from "../Modals/deleteUser.Modal.jsx";
+import DeleteUserModal from "../Modals/DeleteUser.Modal.jsx";
 import { 
     Search, 
     UserPlus, 
