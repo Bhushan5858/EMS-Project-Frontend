@@ -30,15 +30,15 @@ const DepartmentDetail = () => {
     const [confirmData, setConfirmData] = useState(null);
 
     if (isLoading) return (
-        <div className="flex-1 p-8 bg-slate-50 min-h-full flex flex-col items-center justify-center">
+        <div className="flex-1 p-8 bg-slate-50 dark:bg-slate-950 min-h-full flex flex-col items-center justify-center transition-colors">
             <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 font-medium mt-4">Loading department... </p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium mt-4">Loading department... </p>
         </div>
     );
     if (!selectedDepartment) return (
-        <div className="flex-1 p-8 bg-slate-50 min-h-full flex flex-col items-center justify-center">
-            <AlertCircle className="text-slate-300 mb-4" size={48} />
-            <p className="text-slate-500 font-bold">Department Not Found</p>
+        <div className="flex-1 p-8 bg-slate-50 dark:bg-slate-950 min-h-full flex flex-col items-center justify-center transition-colors">
+            <AlertCircle className="text-slate-300 dark:text-slate-600 mb-4" size={48} />
+            <p className="text-slate-500 dark:text-slate-400 font-bold">Department Not Found</p>
         </div>
     );
 
@@ -46,20 +46,20 @@ const DepartmentDetail = () => {
     const filteredEmployees = employees.filter((emp) => emp.role !== "manager");
 
     return (
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50/50 min-h-full">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950 min-h-full transition-colors duration-300">
 
-            <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
 
-                {/* TOP BAR / BREADCRUMBS */}
+                {/* TOP BAR */}
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <button
                         onClick={() => useAuthUserStore.setState({
                             activeSection: "departments",
                             selectedDepartment: null
                         })}
-                        className="group flex items-center gap-2 text-slate-500 hover:text-teal-600 font-bold transition-all"
+                        className="group flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 font-bold transition-all"
                     >
-                        <div className="p-2 rounded-xl bg-white border border-slate-200 group-hover:border-teal-200 group-hover:bg-teal-50 transition-all">
+                        <div className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 group-hover:border-teal-200 dark:group-hover:border-teal-600 group-hover:bg-teal-50 dark:group-hover:bg-teal-900/30 transition-all">
                             <ArrowLeft size={18} />
                         </div>
                         Back to list
@@ -67,7 +67,7 @@ const DepartmentDetail = () => {
 
                     <div className="flex gap-3 w-full sm:w-auto">
                         {role === "admin" && (
-                            <button className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white border border-slate-200 text-rose-500 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 px-4 sm:px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
+                            <button className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-rose-500 hover:text-rose-600 hover:border-rose-200 dark:hover:border-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 px-4 sm:px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
                                 onClick={() => {
                                     setConfirmData({
                                         title: "Delete Department",
@@ -89,7 +89,7 @@ const DepartmentDetail = () => {
 
                         {(role === "admin" || role === "manager") && (
                             <button 
-                                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 sm:px-6 py-3 rounded-2xl font-bold shadow-lg shadow-slate-200 transition-all active:scale-95"
+                                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 text-white px-4 sm:px-6 py-3 rounded-2xl font-bold shadow-lg shadow-slate-200 dark:shadow-none transition-all active:scale-95"
                                 onClick={() => setIsEditOpen(true)}
                             >
                                 <Settings2 size={18} />
@@ -101,20 +101,20 @@ const DepartmentDetail = () => {
                 </div>
 
                 {/* HERO HEADER */}
-                <div className="bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 p-6 sm:p-10 border border-slate-100 relative overflow-hidden">
-                    <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-teal-50 rounded-full blur-3xl opacity-50"></div>
+                <div className="bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none p-6 sm:p-10 border border-slate-100 dark:border-slate-700 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-teal-50 dark:bg-teal-900/20 rounded-full blur-3xl opacity-50"></div>
                     
                     <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
-                        <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center bg-teal-600 text-white rounded-2xl sm:rounded-[1.5rem] shadow-xl shadow-teal-100">
+                        <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center bg-teal-600 text-white rounded-2xl sm:rounded-[1.5rem] shadow-xl shadow-teal-100 dark:shadow-teal-900/30">
                             <Building2 className="size-6 sm:size-9" />
                         </div>
 
                         <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                                <h1 className="text-2xl sm:text-4xl font-black text-slate-800 tracking-tight">
+                                <h1 className="text-2xl sm:text-4xl font-black text-slate-800 dark:text-white tracking-tight">
                                     {department.name}
                                 </h1>
-                                <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
+                                <span className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100 dark:border-emerald-700">
                                     Active
                                 </span>
                             </div>
@@ -123,7 +123,7 @@ const DepartmentDetail = () => {
                                     <Calendar size={14} />
                                     {new Date(department.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
                                 </div>
-                                <div className="w-1 h-1 rounded-full bg-slate-200"></div>
+                                <div className="w-1 h-1 rounded-full bg-slate-200 dark:bg-slate-600"></div>
                                 <div className="flex items-center gap-1.5">
                                     <UsersIcon size={14} />
                                     {employees.length} Members
@@ -137,21 +137,21 @@ const DepartmentDetail = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
                     {/* MANAGER CARD */}
-                    <div className="lg:col-span-1 border border-slate-100 bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 flex flex-col">
+                    <div className="lg:col-span-1 border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none flex flex-col">
                         <div className="flex items-center gap-3 mb-8">
-                            <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
+                            <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                                 <UserIcon size={20} />
                             </div>
-                            <h2 className="text-xl font-bold text-slate-800 tracking-tight">Direct Manager</h2>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">Direct Manager</h2>
                         </div>
 
                         {manager ? (
                             <div className="flex-1 flex flex-col">
-                                <div className="flex flex-col items-center text-center mb-8 bg-slate-50/50 p-6 rounded-[2rem] border border-slate-100">
-                                    <div className="w-20 h-20 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-3xl font-black mb-4 shadow-sm border-2 border-white">
+                                <div className="flex flex-col items-center text-center mb-8 bg-slate-50/50 dark:bg-slate-700/30 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700">
+                                    <div className="w-20 h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-3xl font-black mb-4 shadow-sm border-2 border-white dark:border-slate-700">
                                         {manager.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-800">{manager.name}</h3>
+                                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">{manager.name}</h3>
                                     <div className="flex items-center gap-1 text-slate-400 font-medium text-sm mt-1">
                                         <Briefcase size={14} />
                                         {manager.position || 'Department Head'}
@@ -164,7 +164,7 @@ const DepartmentDetail = () => {
                                             <Mail size={16} />
                                             <span className="text-sm font-medium">Email</span>
                                         </div>
-                                        <span className="text-sm font-bold text-slate-700 truncate max-w-[140px] sm:max-w-none">{manager.email}</span>
+                                        <span className="text-sm font-bold text-slate-700 dark:text-slate-200 truncate max-w-[140px] sm:max-w-none">{manager.email}</span>
                                     </div>
 
                                     {role !== "employee" && (
@@ -173,7 +173,7 @@ const DepartmentDetail = () => {
                                                 <DollarSign size={16} />
                                                 <span className="text-sm font-medium">Monthly Pay</span>
                                             </div>
-                                            <span className="text-sm font-black text-slate-800">INR {manager.salary?.toLocaleString()}</span>
+                                            <span className="text-sm font-black text-slate-800 dark:text-white">INR {manager.salary?.toLocaleString()}</span>
                                         </div>
                                     )}
                                 </div>
@@ -199,14 +199,14 @@ const DepartmentDetail = () => {
                                 )}
                             </div>
                         ) : (
-                            <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-slate-50/50 rounded-[2rem] border border-dashed border-slate-200">
-                                <div className="p-4 rounded-full bg-white shadow-sm mb-4 text-slate-300">
+                            <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-slate-50/50 dark:bg-slate-700/20 rounded-[2rem] border border-dashed border-slate-200 dark:border-slate-600">
+                                <div className="p-4 rounded-full bg-white dark:bg-slate-700 shadow-sm mb-4 text-slate-300 dark:text-slate-500">
                                     <UserIcon size={32} />
                                 </div>
-                                <p className="text-slate-500 font-medium text-sm leading-relaxed">No leadership has been assigned to this department yet.</p>
+                                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm leading-relaxed">No leadership has been assigned to this department yet.</p>
                                 {role === "admin" && (
                                     <button
-                                        className="mt-4 flex items-center gap-2 text-teal-600 font-black text-xs uppercase tracking-widest hover:underline"
+                                        className="mt-4 flex items-center gap-2 text-teal-600 dark:text-teal-400 font-black text-xs uppercase tracking-widest hover:underline"
                                         onClick={() => setModalType("manager")}
                                     >
                                         <PlusCircle size={16} />
@@ -221,46 +221,47 @@ const DepartmentDetail = () => {
                     <div className="lg:col-span-2 space-y-6">
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-xl bg-teal-50 text-teal-600">
+                                <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400">
                                     <UsersIcon size={20} />
                                 </div>
-                                <h2 className="text-xl font-bold text-slate-800 tracking-tight">
-                                    Active Team <span className="text-slate-300 ml-1">({filteredEmployees.length})</span>
+                                <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">
+                                    Active Team <span className="text-slate-300 dark:text-slate-600 ml-1">({filteredEmployees.length})</span>
                                 </h2>
                             </div>
 
                             {(role === "admin" || role === "manager") && (
                                 <button
-                                    className="flex items-center gap-2 text-teal-600 font-black text-xs uppercase tracking-widest hover:bg-teal-50 px-4 py-2 rounded-xl transition-all"
+                                    className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-black text-xs uppercase tracking-widest hover:bg-teal-50 dark:hover:bg-teal-900/20 px-4 py-2 rounded-xl transition-all"
                                     onClick={() => setModalType("employee")}
                                 >
                                     <PlusCircle size={18} />
-                                    Add Team Member
+                                    <span className="hidden sm:inline">Add Team Member</span>
+                                    <span className="sm:hidden">Add</span>
                                 </button>
                             )}
                         </div>
 
                         {filteredEmployees.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-[2.5rem] border border-dashed border-slate-200">
+                            <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-700">
                                 <p className="text-slate-400 font-medium">This team is currently empty.</p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {filteredEmployees.map(emp => (
-                                    <div key={emp._id} className="group bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-slate-100 transition-all duration-300 flex items-center justify-between">
+                                    <div key={emp._id} className="group bg-white dark:bg-slate-800 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-slate-100 dark:hover:shadow-none transition-all duration-300 flex items-center justify-between">
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-2xl bg-slate-50 text-slate-400 flex items-center justify-center font-bold text-sm border border-slate-100 group-hover:bg-teal-600 group-hover:text-white transition-all">
+                                            <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-300 flex items-center justify-center font-bold text-sm border border-slate-100 dark:border-slate-600 group-hover:bg-teal-600 group-hover:text-white transition-all">
                                                 {emp.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 1)}
                                             </div>
                                             <div>
-                                                <h4 className="font-bold text-slate-800 text-sm">{emp.name}</h4>
+                                                <h4 className="font-bold text-slate-800 dark:text-white text-sm">{emp.name}</h4>
                                                 <p className="text-xs text-slate-400 font-medium">{emp.position || 'Staff'}</p>
                                             </div>
                                         </div>
 
                                         {(role === "admin" || role === "manager") && (
                                             <button
-                                                className="p-2 rounded-xl bg-rose-50 text-rose-500 hover:bg-rose-100 border border-rose-200 transition-all flex-shrink-0"
+                                                className="p-2 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200 dark:border-rose-700 transition-all flex-shrink-0"
                                                 onClick={() => {
                                                     setConfirmData({
                                                         title: "Remove Employee",

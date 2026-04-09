@@ -5,6 +5,8 @@ import {
   EyeOff,
   Eye,
   Loader2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -12,7 +14,7 @@ import { useAuthUserStore } from "../Store/useAuthUserStore";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, authUser } = useAuthUserStore();
+  const { login, authUser, theme, toggleTheme } = useAuthUserStore();
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +27,11 @@ const Login = () => {
   useEffect(() => {
     if (authUser) navigate("/home");
   }, [authUser, navigate]);
+
+  // Apply theme on login page mount
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+  }, [theme]);
 
   const validateForm = () => {
     if (!formData.email.trim()) return toast.error("Email is required");
@@ -59,6 +66,15 @@ const Login = () => {
       {/* Background glow */}
       <div className="absolute w-96 h-96 bg-teal-500/20 rounded-full blur-3xl -top-20 -left-20"></div>
       <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl bottom-0 right-0"></div>
+
+      {/* Theme toggle */}
+      <button
+        onClick={toggleTheme}
+        className="absolute top-6 right-6 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all z-10"
+        title="Toggle theme"
+      >
+        {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+      </button>
 
       {/* Card */}
       <div className="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 mx-4">

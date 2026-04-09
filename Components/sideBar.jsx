@@ -6,10 +6,12 @@ import {
     User,
     LogOut,
     X,
+    Sun,
+    Moon,
 } from "lucide-react";
 
 const SideBar = () => {
-    const { authUser, activeSection, logout, toggleMobileSidebar } = useAuthUserStore();
+    const { authUser, activeSection, logout, toggleMobileSidebar, theme, toggleTheme } = useAuthUserStore();
     const role = authUser?.role;
 
     const handleLogout = () => {
@@ -57,7 +59,7 @@ const SideBar = () => {
                     <h1 className="text-xl font-bold tracking-wide">EMS</h1>
                     <p className="text-xs text-slate-400 capitalize mt-1">{role}</p>
                 </div>
-                <button 
+                <button
                     onClick={() => toggleMobileSidebar(false)}
                     className="lg:hidden p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-all"
                 >
@@ -87,6 +89,24 @@ const SideBar = () => {
 
             {/* FOOTER */}
             <div className="p-4 border-t border-white/10 space-y-3">
+
+                {/* THEME TOGGLE */}
+                <button
+                    onClick={toggleTheme}
+                    className="w-full flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white py-2.5 rounded-xl text-sm transition-all active:scale-95"
+                >
+                    {theme === 'light' ? (
+                        <>
+                            <Moon className="size-4" />
+                            Dark Mode
+                        </>
+                    ) : (
+                        <>
+                            <Sun className="size-4" />
+                            Light Mode
+                        </>
+                    )}
+                </button>
 
                 <button
                     onClick={handleLogout}

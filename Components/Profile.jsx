@@ -19,8 +19,8 @@ const Profile = () => {
 
     if (!authUser) {
         return (
-            <div className="flex-1 flex items-center justify-center bg-slate-100">
-                <div className="animate-pulse text-slate-500 text-lg">
+            <div className="flex-1 flex items-center justify-center bg-slate-100 dark:bg-slate-950 transition-colors">
+                <div className="animate-pulse text-slate-500 dark:text-slate-400 text-lg">
                     Loading Profile...
                 </div>
             </div>
@@ -28,25 +28,25 @@ const Profile = () => {
     }
 
     const InfoCard = ({ icon: Icon, label, value }) => (
-        <div className="p-5 rounded-2xl bg-white/60 backdrop-blur-lg border border-slate-200 hover:shadow-xl transition-all hover:-translate-y-1">
+        <div className="p-5 rounded-2xl bg-white/60 dark:bg-slate-700/50 backdrop-blur-lg border border-slate-200 dark:border-slate-600 hover:shadow-xl transition-all hover:-translate-y-1">
             <div className="flex items-center gap-3 mb-2">
-                <Icon size={18} className="text-teal-600" />
+                <Icon size={18} className="text-teal-600 dark:text-teal-400" />
                 <p className="text-xs uppercase text-slate-400">{label}</p>
             </div>
-            <p className="text-sm font-semibold text-slate-700">
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
                 {value || "Not Assigned"}
             </p>
         </div>
     );
 
     return (
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-950 dark:to-slate-900 min-h-screen transition-colors duration-300">
             <div className="max-w-6xl mx-auto space-y-8">
 
                 {/* HEADER */}
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">My Profile</h1>
-                    <p className="text-slate-500">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">My Profile</h1>
+                    <p className="text-slate-500 dark:text-slate-400">
                         Manage your account information
                     </p>
                 </div>
@@ -95,9 +95,9 @@ const Profile = () => {
                     <div className="lg:col-span-2 space-y-6">
 
                         {/* ACCOUNT INFO */}
-                        <div className="backdrop-blur-xl bg-white/70 rounded-3xl shadow-xl border border-white/30">
-                            <div className="p-6 border-b border-slate-200">
-                                <h3 className="text-sm font-semibold text-slate-600 uppercase">
+                        <div className="backdrop-blur-xl bg-white/70 dark:bg-slate-800/70 rounded-3xl shadow-xl border border-white/30 dark:border-slate-700">
+                            <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                                <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
                                     Account Details
                                 </h3>
                             </div>
@@ -111,9 +111,9 @@ const Profile = () => {
 
                         {/* EMPLOYEE INFO */}
                         {authUser.isEmployee && (
-                            <div className="backdrop-blur-xl bg-white/70 rounded-3xl shadow-xl border border-white/30 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                                <div className="p-6 border-b border-slate-200">
-                                    <h3 className="text-sm font-semibold text-slate-600 uppercase">
+                            <div className="backdrop-blur-xl bg-white/70 dark:bg-slate-800/70 rounded-3xl shadow-xl border border-white/30 dark:border-slate-700">
+                                <div className="p-6 border-b border-slate-200 dark:border-slate-700">
+                                    <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
                                         Job Information
                                     </h3>
                                 </div>
@@ -158,11 +158,11 @@ const Profile = () => {
 
                         {/* ONBOARDING */}
                         {!authUser.isEmployee && authUser.role !== "admin" && (
-                            <div className="bg-amber-50 rounded-2xl p-6 border border-amber-200 shadow-sm">
-                                <h4 className="font-semibold text-amber-800">
+                            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-700 shadow-sm">
+                                <h4 className="font-semibold text-amber-800 dark:text-amber-300">
                                     Onboarding in Progress
                                 </h4>
-                                <p className="text-sm text-amber-700 mt-1">
+                                <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">
                                     You are not assigned to a department yet.
                                 </p>
                             </div>

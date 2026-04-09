@@ -10,8 +10,17 @@ export const useAuthUserStore = create((set,get) => ({
     users:[],
     activeSection: "dashboard",
     isMobileSidebarOpen: false,
+    theme: localStorage.getItem('ems-theme') || 'light',
 
     toggleMobileSidebar: (isOpen) => set({ isMobileSidebarOpen: isOpen }),
+
+    toggleTheme: () => {
+        const current = get().theme;
+        const next = current === 'light' ? 'dark' : 'light';
+        localStorage.setItem('ems-theme', next);
+        document.documentElement.classList.toggle('dark', next === 'dark');
+        set({ theme: next });
+    },
 
 
     getemployees:async()=>{
