@@ -4,7 +4,7 @@ const ConfirmModal = ({ title, message, onConfirm, onCancel }) => {
     return (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
-            <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-md p-8 animate-in zoom-in duration-300 relative border border-slate-100 overflow-hidden">
+            <div className="bg-white rounded-2xl sm:rounded-[2rem] shadow-2xl w-full max-w-md p-5 sm:p-8 animate-in zoom-in duration-300 relative border border-slate-100 overflow-hidden">
                 
                 {/* Decoration */}
                 <div className="absolute top-0 left-0 w-full h-2 bg-rose-500"></div>

@@ -40,12 +40,12 @@ const Profile = () => {
     );
 
     return (
-        <div className="flex-1 p-8 bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen">
             <div className="max-w-6xl mx-auto space-y-8">
 
                 {/* HEADER */}
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-800">My Profile</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800">My Profile</h1>
                     <p className="text-slate-500">
                         Manage your account information
                     </p>
@@ -55,7 +55,7 @@ const Profile = () => {
 
                     {/* LEFT SIDE PROFILE CARD */}
                     <div className="lg:col-span-1">
-                        <div className="relative bg-gradient-to-br from-teal-500 via-blue-500 to-indigo-600 rounded-3xl p-8 text-white shadow-2xl overflow-hidden">
+                        <div className="relative bg-gradient-to-br from-teal-500 via-blue-500 to-indigo-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-2xl overflow-hidden">
 
                             {/* Glow */}
                             <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>

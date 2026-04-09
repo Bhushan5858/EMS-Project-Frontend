@@ -104,8 +104,8 @@ const Dashboard = () => {
                         />
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+                        <div className="bg-white p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 shadow-sm">
                             <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
                                 <TrendingUp className="text-teal-600" size={20} />
                                 User Activity
@@ -126,7 +126,7 @@ const Dashboard = () => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-3xl shadow-xl text-white flex flex-col justify-between">
+                        <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xl text-white flex flex-col justify-between">
                             <div>
                                 <h3 className="text-xl font-bold mb-2">Company Overview</h3>
                                 <p className="text-slate-400 text-sm leading-relaxed">

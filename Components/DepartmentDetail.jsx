@@ -46,12 +46,12 @@ const DepartmentDetail = () => {
     const filteredEmployees = employees.filter((emp) => emp.role !== "manager");
 
     return (
-        <div className="flex-1 p-8 bg-slate-50/50 min-h-full">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50/50 min-h-full">
 
-            <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
                 {/* TOP BAR / BREADCRUMBS */}
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                     <button
                         onClick={() => useAuthUserStore.setState({
                             activeSection: "departments",
@@ -65,9 +65,9 @@ const DepartmentDetail = () => {
                         Back to list
                     </button>
 
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 w-full sm:w-auto">
                         {role === "admin" && (
-                            <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-500 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
+                            <button className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white border border-slate-200 text-rose-500 hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 px-4 sm:px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
                                 onClick={() => {
                                     setConfirmData({
                                         title: "Delete Department",
@@ -83,49 +83,50 @@ const DepartmentDetail = () => {
                                 }}
                             >
                                 <Trash2 size={18} />
-                                Delete
+                                <span className="hidden sm:inline">Delete</span>
                             </button>
                         )}
 
                         {(role === "admin" || role === "manager") && (
                             <button 
-                                className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-slate-200 transition-all active:scale-95"
+                                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 sm:px-6 py-3 rounded-2xl font-bold shadow-lg shadow-slate-200 transition-all active:scale-95"
                                 onClick={() => setIsEditOpen(true)}
                             >
                                 <Settings2 size={18} />
-                                Update Details
+                                <span className="hidden sm:inline">Update Details</span>
+                                <span className="sm:hidden">Update</span>
                             </button>
                         )}
                     </div>
                 </div>
 
                 {/* HERO HEADER */}
-                <div className="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 p-10 border border-slate-100 relative overflow-hidden">
+                <div className="bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 p-6 sm:p-10 border border-slate-100 relative overflow-hidden">
                     <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-teal-50 rounded-full blur-3xl opacity-50"></div>
                     
-                    <div className="relative flex items-center gap-8">
-                        <div className="w-20 h-20 flex items-center justify-center bg-teal-600 text-white rounded-[1.5rem] shadow-xl shadow-teal-100">
-                            <Building2 size={36} />
+                    <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
+                        <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center bg-teal-600 text-white rounded-2xl sm:rounded-[1.5rem] shadow-xl shadow-teal-100">
+                            <Building2 className="size-6 sm:size-9" />
                         </div>
 
-                        <div>
-                            <div className="flex items-center gap-3">
-                                <h1 className="text-4xl font-black text-slate-800 tracking-tight">
+                        <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                                <h1 className="text-2xl sm:text-4xl font-black text-slate-800 tracking-tight">
                                     {department.name}
                                 </h1>
-                                <span className="px-3 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
-                                    Active Division
+                                <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">
+                                    Active
                                 </span>
                             </div>
-                            <div className="flex items-center gap-4 mt-3 text-slate-400 font-medium">
+                            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-2 sm:mt-3 text-slate-400 font-medium text-sm">
                                 <div className="flex items-center gap-1.5">
-                                    <Calendar size={16} />
-                                    Established {new Date(department.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}
+                                    <Calendar size={14} />
+                                    {new Date(department.createdAt).toLocaleDateString(undefined, { month: 'short', year: 'numeric' })}
                                 </div>
-                                <div className="w-1.5 h-1.5 rounded-full bg-slate-200"></div>
+                                <div className="w-1 h-1 rounded-full bg-slate-200"></div>
                                 <div className="flex items-center gap-1.5">
-                                    <UsersIcon size={16} />
-                                    {employees.length} Members Total
+                                    <UsersIcon size={14} />
+                                    {employees.length} Members
                                 </div>
                             </div>
                         </div>
@@ -136,7 +137,7 @@ const DepartmentDetail = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
                     {/* MANAGER CARD */}
-                    <div className="lg:col-span-1 border border-slate-100 bg-white rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/50 flex flex-col">
+                    <div className="lg:col-span-1 border border-slate-100 bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 flex flex-col">
                         <div className="flex items-center gap-3 mb-8">
                             <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
                                 <UserIcon size={20} />
@@ -163,7 +164,7 @@ const DepartmentDetail = () => {
                                             <Mail size={16} />
                                             <span className="text-sm font-medium">Email</span>
                                         </div>
-                                        <span className="text-sm font-bold text-slate-700">{manager.email}</span>
+                                        <span className="text-sm font-bold text-slate-700 truncate max-w-[140px] sm:max-w-none">{manager.email}</span>
                                     </div>
 
                                     {role !== "employee" && (
@@ -259,7 +260,7 @@ const DepartmentDetail = () => {
 
                                         {(role === "admin" || role === "manager") && (
                                             <button
-                                                className="p-2 rounded-xl text-slate-300 hover:text-rose-500 hover:bg-rose-50 transition-all opacity-0 group-hover:opacity-100"
+                                                className="p-2 rounded-xl bg-rose-50 text-rose-500 hover:bg-rose-100 border border-rose-200 transition-all flex-shrink-0"
                                                 onClick={() => {
                                                     setConfirmData({
                                                         title: "Remove Employee",

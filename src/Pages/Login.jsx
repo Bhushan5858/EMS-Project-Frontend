@@ -61,7 +61,7 @@ const Login = () => {
       <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl bottom-0 right-0"></div>
 
       {/* Card */}
-      <div className="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8">
+      <div className="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 mx-4">
 
         {/* Header */}
         <div className="mb-8 text-center">

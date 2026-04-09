@@ -13,8 +13,7 @@ import {
     Users as UsersIcon, 
     CheckCircle2, 
     XCircle,
-    DollarSign,
-    MoreVertical
+    DollarSign
 } from "lucide-react";
 
 const Users = () => {
@@ -184,30 +183,29 @@ const Users = () => {
                                             </td>
 
                                             {/* ACTIONS */}
-                                            <td className="px-8 py-4 text-right">
-                                                <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                                            <td className="px-4 sm:px-8 py-4 text-right">
+                                                <div className="flex items-center justify-end gap-2">
                                                     <button
                                                         onClick={() => {
                                                             setSelectedUser(user);
                                                             setIsModalOpen(true);
                                                         }}
-                                                        className="p-2 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:shadow-lg hover:shadow-blue-50 transition-all"
+                                                        className="p-2 rounded-xl bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 hover:shadow-lg hover:shadow-blue-50 transition-all"
                                                         title="Edit User"
                                                     >
-                                                        <Edit3 size={18} />
+                                                        <Edit3 size={16} />
                                                     </button>
                                                     <button
                                                         onClick={() => {
                                                             setSelectedUser(user);
                                                             setIsDeleteModalOpen(true);
                                                         }}
-                                                        className="p-2 rounded-xl bg-white border border-slate-200 text-slate-400 hover:text-rose-600 hover:border-rose-200 hover:shadow-lg hover:shadow-rose-50 transition-all"
+                                                        className="p-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100 hover:shadow-lg hover:shadow-rose-50 transition-all"
                                                         title="Delete User"
                                                     >
-                                                        <Trash2 size={18} />
+                                                        <Trash2 size={16} />
                                                     </button>
                                                 </div>
-                                                <MoreVertical size={18} className="text-slate-300 group-hover:opacity-0 absolute right-8 transition-opacity" />
                                             </td>
 
                                         </tr>

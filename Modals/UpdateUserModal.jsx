@@ -72,10 +72,10 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-8 space-y-6 overflow-y-auto max-h-[75vh]">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="p-4 sm:p-8 space-y-6 overflow-y-auto max-h-[75vh]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                         {/* Name */}
-                        <div className="space-y-1.5 md:col-span-2">
+                        <div className="space-y-1.5 sm:col-span-2">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Full Identity</label>
                             <div className="relative">
                                 <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -91,7 +91,7 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                         </div>
 
                         {/* Email */}
-                        <div className="space-y-1.5 md:col-span-2">
+                        <div className="space-y-1.5 sm:col-span-2">
                             <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Email Terminal</label>
                             <div className="relative">
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -181,7 +181,7 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                         <button
                             type="button"
                             onClick={onClose}
-                            className="flex-1 py-4 rounded-xl bg-red-600 text-black font-bold text-xs tracking-widest uppercase hover:bg-slate-100 transition-all active:scale-95"
+                            className="flex-1 py-4 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs tracking-widest uppercase hover:bg-slate-200 transition-all active:scale-95"
                         >
                             Dismiss Request
                         </button>

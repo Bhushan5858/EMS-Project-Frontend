@@ -60,7 +60,7 @@ const AssignUserModal = ({ type, departmentId, onClose }) => {
     };
 
     return (
-        <div className="bg-white rounded-[2.5rem] w-full max-w-lg p-10 shadow-2xl animate-in zoom-in duration-300 relative border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-2xl sm:rounded-[2.5rem] w-full max-w-lg p-5 sm:p-10 shadow-2xl animate-in zoom-in duration-300 relative border border-slate-100 overflow-y-auto max-h-[90vh]">
             
             <button onClick={onClose} className="absolute top-8 right-8 p-2 rounded-xl text-slate-300 hover:text-slate-600 hover:bg-slate-50 transition-all z-10">
                 <X size={20} />

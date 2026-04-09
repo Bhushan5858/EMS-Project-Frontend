@@ -38,7 +38,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
     return (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
-            <div className="bg-white w-full max-w-md p-8 rounded-[2rem] shadow-2xl animate-in zoom-in duration-300">
+            <div className="bg-white w-full max-w-md p-5 sm:p-8 rounded-2xl sm:rounded-[2rem] shadow-2xl animate-in zoom-in duration-300 max-h-[90vh] overflow-y-auto">
 
                 <div className="flex items-center gap-3 mb-8 border-b border-slate-100 pb-4">
                     <div className="p-2.5 rounded-2xl bg-teal-50 text-teal-600">
@@ -123,7 +123,7 @@ const AddUserModal = ({ isOpen, onClose }) => {
                     </div>
 
                     {/* Footer Buttons */}
-                    <div className="flex justify-end gap-3 pt-6 mt-4">
+                    <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 pt-6 mt-4">
                         <button
                             type="button"
                             onClick={onClose}

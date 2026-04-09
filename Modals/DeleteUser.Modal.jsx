@@ -7,7 +7,7 @@ const DeleteUserModal = ({ isOpen, onClose, onConfirm, user }) => {
     return (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
 
-            <div className="bg-white w-full max-w-sm p-8 rounded-[2rem] shadow-2xl animate-in zoom-in duration-300">
+            <div className="bg-white w-full max-w-sm p-5 sm:p-8 rounded-2xl sm:rounded-[2rem] shadow-2xl animate-in zoom-in duration-300">
 
                 <div className="flex flex-col items-center text-center">
                     <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center mb-6 shadow-sm">

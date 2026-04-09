@@ -32,7 +32,7 @@ const UpdateDepartmentModal = ({ isOpen, onClose, department }) => {
     };
 
     return (
-        <div className="bg-white rounded-[2.5rem] w-full max-w-md p-8 shadow-2xl animate-in zoom-in duration-300 relative border border-slate-100">
+        <div className="bg-white rounded-2xl sm:rounded-[2.5rem] w-full max-w-md p-5 sm:p-8 shadow-2xl animate-in zoom-in duration-300 relative border border-slate-100 max-h-[90vh] overflow-y-auto">
             
             <button onClick={onClose} className="absolute top-6 right-6 p-2 rounded-xl text-slate-300 hover:text-slate-600 hover:bg-slate-50 transition-all">
                 <X size={20} />
