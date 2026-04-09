@@ -4,6 +4,7 @@ import ConfirmModal from "../Modals/ConfirmModal";
 import AssignUserModal from "../Modals/AssignUserModal";
 import { useDepartmentStore } from "../src/Store/useDepartmentStore";
 import { useAuthUserStore } from "../src/Store/useAuthUserStore";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
     ArrowLeft, 
     User as UserIcon, 
@@ -18,6 +19,22 @@ import {
     DollarSign,
     AlertCircle
 } from "lucide-react";
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.1
+        }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
 
 const DepartmentDetail = () => {
 
@@ -48,11 +65,18 @@ const DepartmentDetail = () => {
     return (
         <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950 min-h-full transition-colors duration-300">
 
-            <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8">
+            <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                className="max-w-6xl mx-auto space-y-6 sm:space-y-8"
+            >
 
                 {/* TOP BAR */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <button
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <motion.button
+                        whileHover={{ x: -4 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => useAuthUserStore.setState({
                             activeSection: "departments",
                             selectedDepartment: null
@@ -63,11 +87,13 @@ const DepartmentDetail = () => {
                             <ArrowLeft size={18} />
                         </div>
                         Back to list
-                    </button>
+                    </motion.button>
 
                     <div className="flex gap-3 w-full sm:w-auto">
                         {role === "admin" && (
-                            <button className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-rose-500 hover:text-rose-600 hover:border-rose-200 dark:hover:border-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 px-4 sm:px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
+                            <motion.button 
+                                whileTap={{ scale: 0.95 }}
+                                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-rose-500 hover:text-rose-600 hover:border-rose-200 dark:hover:border-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 px-4 sm:px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
                                 onClick={() => {
                                     setConfirmData({
                                         title: "Delete Department",
@@ -84,30 +110,37 @@ const DepartmentDetail = () => {
                             >
                                 <Trash2 size={18} />
                                 <span className="hidden sm:inline">Delete</span>
-                            </button>
+                            </motion.button>
                         )}
 
                         {(role === "admin" || role === "manager") && (
-                            <button 
+                            <motion.button 
+                                whileTap={{ scale: 0.95 }}
                                 className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 text-white px-4 sm:px-6 py-3 rounded-2xl font-bold shadow-lg shadow-slate-200 dark:shadow-none transition-all active:scale-95"
                                 onClick={() => setIsEditOpen(true)}
                             >
                                 <Settings2 size={18} />
                                 <span className="hidden sm:inline">Update Details</span>
                                 <span className="sm:hidden">Update</span>
-                            </button>
+                            </motion.button>
                         )}
                     </div>
-                </div>
+                </motion.div>
 
                 {/* HERO HEADER */}
-                <div className="bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none p-6 sm:p-10 border border-slate-100 dark:border-slate-700 relative overflow-hidden">
+                <motion.div 
+                    variants={itemVariants}
+                    className="bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none p-6 sm:p-10 border border-slate-100 dark:border-slate-700 relative overflow-hidden"
+                >
                     <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-teal-50 dark:bg-teal-900/20 rounded-full blur-3xl opacity-50"></div>
                     
                     <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
-                        <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center bg-teal-600 text-white rounded-2xl sm:rounded-[1.5rem] shadow-xl shadow-teal-100 dark:shadow-teal-900/30">
+                        <motion.div 
+                            whileHover={{ rotate: 10, scale: 1.1 }}
+                            className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center bg-teal-600 text-white rounded-2xl sm:rounded-[1.5rem] shadow-xl shadow-teal-100 dark:shadow-teal-900/30"
+                        >
                             <Building2 className="size-6 sm:size-9" />
-                        </div>
+                        </motion.div>
 
                         <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -131,13 +164,17 @@ const DepartmentDetail = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* MANAGER & EMPLOYEES GRID */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     
                     {/* MANAGER CARD */}
-                    <div className="lg:col-span-1 border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none flex flex-col">
+                    <motion.div 
+                        variants={itemVariants}
+                        whileHover={{ y: -5 }}
+                        className="lg:col-span-1 border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 dark:shadow-none flex flex-col"
+                    >
                         <div className="flex items-center gap-3 mb-8">
                             <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                                 <UserIcon size={20} />
@@ -148,9 +185,12 @@ const DepartmentDetail = () => {
                         {manager ? (
                             <div className="flex-1 flex flex-col">
                                 <div className="flex flex-col items-center text-center mb-8 bg-slate-50/50 dark:bg-slate-700/30 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700">
-                                    <div className="w-20 h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-3xl font-black mb-4 shadow-sm border-2 border-white dark:border-slate-700">
+                                    <motion.div 
+                                        whileHover={{ scale: 1.1 }}
+                                        className="w-20 h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-3xl font-black mb-4 shadow-sm border-2 border-white dark:border-slate-700"
+                                    >
                                         {manager.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
-                                    </div>
+                                    </motion.div>
                                     <h3 className="text-xl font-bold text-slate-800 dark:text-white">{manager.name}</h3>
                                     <div className="flex items-center gap-1 text-slate-400 font-medium text-sm mt-1">
                                         <Briefcase size={14} />
@@ -179,7 +219,9 @@ const DepartmentDetail = () => {
                                 </div>
 
                                 {role === "admin" && (
-                                    <button
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
                                         className="mt-auto pt-8 text-rose-500 font-bold text-sm hover:text-rose-600 transition-colors flex items-center justify-center gap-2 group"
                                         onClick={() => {
                                             setConfirmData({
@@ -195,7 +237,7 @@ const DepartmentDetail = () => {
                                     >
                                         <Trash2 size={16} className="group-hover:scale-110 transition-transform" />
                                         Unassign Manager
-                                    </button>
+                                    </motion.button>
                                 )}
                             </div>
                         ) : (
@@ -205,21 +247,23 @@ const DepartmentDetail = () => {
                                 </div>
                                 <p className="text-slate-500 dark:text-slate-400 font-medium text-sm leading-relaxed">No leadership has been assigned to this department yet.</p>
                                 {role === "admin" && (
-                                    <button
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
                                         className="mt-4 flex items-center gap-2 text-teal-600 dark:text-teal-400 font-black text-xs uppercase tracking-widest hover:underline"
                                         onClick={() => setModalType("manager")}
                                     >
                                         <PlusCircle size={16} />
                                         Assign Now
-                                    </button>
+                                    </motion.button>
                                 )}
                             </div>
                         )}
-                    </div>
+                    </motion.div>
 
                     {/* EMPLOYEES SECTION */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="flex items-center justify-between">
+                        <motion.div variants={itemVariants} className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400">
                                     <UsersIcon size={20} />
@@ -230,89 +274,114 @@ const DepartmentDetail = () => {
                             </div>
 
                             {(role === "admin" || role === "manager") && (
-                                <button
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                     className="flex items-center gap-2 text-teal-600 dark:text-teal-400 font-black text-xs uppercase tracking-widest hover:bg-teal-50 dark:hover:bg-teal-900/20 px-4 py-2 rounded-xl transition-all"
                                     onClick={() => setModalType("employee")}
                                 >
                                     <PlusCircle size={18} />
                                     <span className="hidden sm:inline">Add Team Member</span>
                                     <span className="sm:hidden">Add</span>
-                                </button>
+                                </motion.button>
                             )}
-                        </div>
+                        </motion.div>
 
-                        {filteredEmployees.length === 0 ? (
-                            <div className="text-center py-20 bg-white dark:bg-slate-800 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-700">
-                                <p className="text-slate-400 font-medium">This team is currently empty.</p>
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {filteredEmployees.map(emp => (
-                                    <div key={emp._id} className="group bg-white dark:bg-slate-800 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-slate-100 dark:hover:shadow-none transition-all duration-300 flex items-center justify-between">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-300 flex items-center justify-center font-bold text-sm border border-slate-100 dark:border-slate-600 group-hover:bg-teal-600 group-hover:text-white transition-all">
-                                                {emp.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 1)}
+                        <AnimatePresence mode="popLayout">
+                            {filteredEmployees.length === 0 ? (
+                                <motion.div 
+                                    key="empty-team"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="text-center py-20 bg-white dark:bg-slate-800 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-700 font-medium"
+                                >
+                                    <p className="text-slate-400">This team is currently empty.</p>
+                                </motion.div>
+                            ) : (
+                                <motion.div 
+                                    variants={containerVariants}
+                                    className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+                                >
+                                    {filteredEmployees.map(emp => (
+                                        <motion.div 
+                                            key={emp._id} 
+                                            variants={itemVariants}
+                                            whileHover={{ y: -5, scale: 1.02 }}
+                                            className="group bg-white dark:bg-slate-800 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-xl hover:shadow-slate-100 dark:hover:shadow-none transition-all duration-300 flex items-center justify-between"
+                                        >
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-12 h-12 rounded-2xl bg-slate-50 dark:bg-slate-700 text-slate-400 dark:text-slate-300 flex items-center justify-center font-bold text-sm border border-slate-100 dark:border-slate-600 group-hover:bg-teal-600 group-hover:text-white transition-all">
+                                                    {emp.name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 1)}
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-slate-800 dark:text-white text-sm">{emp.name}</h4>
+                                                    <p className="text-xs text-slate-400 font-medium">{emp.position || 'Staff'}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h4 className="font-bold text-slate-800 dark:text-white text-sm">{emp.name}</h4>
-                                                <p className="text-xs text-slate-400 font-medium">{emp.position || 'Staff'}</p>
-                                            </div>
-                                        </div>
 
-                                        {(role === "admin" || role === "manager") && (
-                                            <button
-                                                className="p-2 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200 dark:border-rose-700 transition-all flex-shrink-0"
-                                                onClick={() => {
-                                                    setConfirmData({
-                                                        title: "Remove Employee",
-                                                        message: `Unassign ${emp.name} from this department?`,
-                                                        onConfirm:async () => {
-                                                            await removeDepartmentUser(department._id, emp._id);
-                                                            await getUsers();
-                                                            setConfirmData(null);
-                                                        }
-                                                    });
-                                                }}
-                                            >
-                                                <Trash2 size={18} />
-                                            </button>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                                            {(role === "admin" || role === "manager") && (
+                                                <motion.button
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                    className="p-2 rounded-xl bg-rose-50 dark:bg-rose-900/30 text-rose-500 dark:text-rose-400 hover:bg-rose-100 dark:hover:bg-rose-900/50 border border-rose-200 dark:border-rose-700 transition-all flex-shrink-0"
+                                                    onClick={() => {
+                                                        setConfirmData({
+                                                            title: "Remove Employee",
+                                                            message: `Unassign ${emp.name} from this department?`,
+                                                            onConfirm:async () => {
+                                                                await removeDepartmentUser(department._id, emp._id);
+                                                                await getUsers();
+                                                                setConfirmData(null);
+                                                            }
+                                                        });
+                                                    }}
+                                                >
+                                                    <Trash2 size={18} />
+                                                </motion.button>
+                                            )}
+                                        </motion.div>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* MODALS */}
-            {confirmData && (
-                <ConfirmModal
-                    title={confirmData.title}
-                    message={confirmData.message}
-                    onConfirm={confirmData.onConfirm}
-                    onCancel={() => setConfirmData(null)}
-                />
-            )}
-
-            {isEditOpen && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <UpdateDepartmentModal 
-                        department={department} 
-                        onClose={() => setIsEditOpen(false)} 
+            <AnimatePresence>
+                {confirmData && (
+                    <ConfirmModal
+                        title={confirmData.title}
+                        message={confirmData.message}
+                        onConfirm={confirmData.onConfirm}
+                        onCancel={() => setConfirmData(null)}
                     />
-                </div>
-            )}
+                )}
+            </AnimatePresence>
 
-            {modalType && (
-                <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <AssignUserModal
-                        type={modalType}
-                        departmentId={department._id}
-                        onClose={() => setModalType(null)}
-                    />
-                </div>
-            )}
+            <AnimatePresence>
+                {isEditOpen && (
+                    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        <UpdateDepartmentModal 
+                            department={department} 
+                            onClose={() => setIsEditOpen(false)} 
+                        />
+                    </div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {modalType && (
+                    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        <AssignUserModal
+                            type={modalType}
+                            departmentId={department._id}
+                            onClose={() => setModalType(null)}
+                        />
+                    </div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

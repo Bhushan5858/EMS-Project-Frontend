@@ -1,223 +1,241 @@
 import { useEffect } from "react";
 import { useAuthUserStore } from "../src/Store/useAuthUserStore";
-import { useDashboardStore } from "../src/Store/useDashboardStore";
+import { useDepartmentStore } from "../src/Store/useDepartmentStore";
 import { 
     Users, 
     Building2, 
-    DollarSign, 
-    TrendingUp, 
     Briefcase, 
-    CheckCircle2, 
-    Calendar,
-    ArrowRight
+    TrendingUp, 
+    ChevronRight,
+    ArrowUpRight,
+    ArrowDownRight,
+    Search,
+    Plus,
+    LayoutDashboard
 } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2
+        }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
+
+const StatCard = ({ title, count, icon: Icon, color, trend, trendValue, navigateTo }) => (
+    <motion.div
+        variants={itemVariants}
+        whileHover={{ y: -8, scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={() => {
+            if (navigateTo) {
+                useAuthUserStore.setState({ activeSection: navigateTo });
+            }
+        }}
+        className={`group bg-white dark:bg-slate-800 p-6 rounded-[2rem] border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-100/50 dark:shadow-none transition-all duration-300 ${navigateTo ? 'cursor-pointer hover:border-teal-500/50' : ''}`}
+    >
+        <div className="flex justify-between items-start mb-4">
+            <div className={`p-4 rounded-2xl ${color} bg-opacity-10 shadow-inner group-hover:scale-110 transition-transform duration-500`}>
+                <Icon className={`size-6 ${color.replace('bg-', 'text-')}`} />
+            </div>
+            {trend && (
+                <div className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold ${trend === 'up' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400' : 'bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400'}`}>
+                    {trend === 'up' ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                    {trendValue}%
+                </div>
+            )}
+        </div>
+        
+        <div className="space-y-1">
+            <h3 className="text-slate-400 dark:text-slate-500 text-sm font-black uppercase tracking-widest">{title}</h3>
+            <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-black text-slate-800 dark:text-white tracking-tighter">
+                    {typeof count === 'number' ? count.toLocaleString() : count}
+                </span>
+            </div>
+        </div>
+
+        <div className="mt-6 flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-300 dark:text-slate-600 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
+            <span>Live Analysis</span>
+            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+        </div>
+    </motion.div>
+);
 
 const Dashboard = () => {
-    const { authUser } = useAuthUserStore();
-    const { stats, isLoading, getStats } = useDashboardStore();
-    const role = authUser?.role;
+    const { users, getUsers, authUser } = useAuthUserStore();
+    const { departments, getDepartments } = useDepartmentStore();
 
     useEffect(() => {
-        getStats();
+        getUsers();
+        getDepartments();
     }, []);
 
-    const StatCard = ({ icon: Icon, label, value, colorClass = "text-teal-600", bgClass = "bg-teal-50", darkBgClass = "dark:bg-teal-900/30", navigateTo }) => (
-        <div
-            onClick={() => {
-                if (navigateTo) useAuthUserStore.setState({ activeSection: navigateTo });
-            }}
-            className={`bg-white dark:bg-slate-800 p-4 sm:p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-xl transition-all duration-300 group ${navigateTo ? 'cursor-pointer active:scale-[0.97]' : ''}`}
-        >
-            <div className="flex items-center justify-between mb-4">
-                <div className={`p-3 rounded-2xl ${bgClass} ${darkBgClass} ${colorClass} group-hover:scale-110 transition-transform`}>
-                    <Icon size={24} />
-                </div>
-                <div className="text-slate-300 dark:text-slate-600 group-hover:text-teal-500 transition-colors">
-                    {navigateTo ? <ArrowRight size={20} /> : <TrendingUp size={20} />}
-                </div>
-            </div>
-            <h2 className="text-[10px] sm:text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{label}</h2>
-            <p className="text-xl sm:text-3xl font-bold text-slate-800 dark:text-white mt-1">{value}</p>
-        </div>
-    );
-
-    if (isLoading) {
-        return (
-            <div className="flex-1 flex items-center justify-center bg-slate-50 dark:bg-slate-950">
-                <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-                    <p className="text-slate-500 dark:text-slate-400 font-medium animate-pulse">Gathering statistics...</p>
-                </div>
-            </div>
-        );
-    }
+    const employeeCount = users.filter((u) => u.role === "employee").length;
+    const totalSalary = users.reduce((acc, current) => acc + (current.salary || 0), 0);
 
     return (
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900 min-h-full transition-colors duration-300">
-            
-            {/* GREETING */}
-            <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">
-                        Hello, {authUser?.name?.split(' ')[0]}! 👋
-                    </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-1">
-                        {role === 'admin' ? "Here's what's happening at your company today." : 
-                         role === 'manager' ? `Reviewing status for the ${stats?.departmentName || 'managed'} department.` :
-                         "Welcome back to your workspace."}
-                    </p>
-                </div>
-                <div className="flex items-center gap-3 bg-white dark:bg-slate-800 px-4 py-2 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                    <Calendar className="text-teal-600 dark:text-teal-400" size={20} />
-                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                        {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                    </span>
-                </div>
-            </div>
-
-            {/* ADMIN DASHBOARD */}
-            {role === "admin" && (
-                <div className="space-y-6 sm:space-y-8">
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                        <StatCard 
-                            icon={Users} 
-                            label="Total Users" 
-                            value={stats?.totalUsers || 0} 
-                            colorClass="text-blue-600 dark:text-blue-400" 
-                            bgClass="bg-blue-50"
-                            darkBgClass="dark:bg-blue-900/30"
-                            navigateTo="users"
-                        />
-                        <StatCard 
-                            icon={Building2} 
-                            label="Departments" 
-                            value={stats?.totalDepartments || 0} 
-                            colorClass="text-purple-600 dark:text-purple-400" 
-                            bgClass="bg-purple-50"
-                            darkBgClass="dark:bg-purple-900/30"
-                            navigateTo="departments"
-                        />
-                        <StatCard 
-                            icon={CheckCircle2} 
-                            label="Total Employees" 
-                            value={stats?.totalEmployees || 0} 
-                            colorClass="text-teal-600 dark:text-teal-400" 
-                            bgClass="bg-teal-50"
-                            darkBgClass="dark:bg-teal-900/30"
-                            navigateTo="users"
-                        />
-                        <StatCard 
-                            icon={DollarSign} 
-                            label="Monthly Payroll" 
-                            value={`$${(stats?.totalPayroll || 0).toLocaleString()}`} 
-                            colorClass="text-emerald-600 dark:text-emerald-400" 
-                            bgClass="bg-emerald-50"
-                            darkBgClass="dark:bg-emerald-900/30"
-                        />
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50 dark:bg-slate-950 min-h-screen transition-colors duration-300">
+            <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="max-w-7xl mx-auto space-y-10"
+            >
+                {/* Header Area */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <div className="flex items-center gap-3">
+                            <div className="p-3 rounded-2xl bg-slate-900 dark:bg-teal-600 text-white shadow-xl">
+                                <LayoutDashboard size={24} />
+                            </div>
+                            <h1 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Main Console</h1>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Greetings, <span className="text-teal-600 dark:text-teal-400 font-bold">{authUser?.name}</span>. Here's your organizational blueprint.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-                        <div className="bg-white dark:bg-slate-800 p-4 sm:p-8 rounded-2xl sm:rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
-                            <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
-                                <TrendingUp className="text-teal-600 dark:text-teal-400" size={20} />
-                                User Activity
-                            </h3>
-                            <div className="flex items-end justify-between gap-4 h-48">
-                                <div className="flex-1 bg-slate-100 dark:bg-slate-700 rounded-t-xl relative group" style={{ height: '60%' }}>
-                                    <div className="absolute inset-x-0 bottom-full mb-2 text-center text-xs font-bold text-slate-500 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Active: {stats?.activeUsers}</div>
-                                    <div className="w-full h-full bg-teal-500 rounded-t-xl transition-all hover:bg-teal-400"></div>
-                                </div>
-                                <div className="flex-1 bg-slate-100 dark:bg-slate-700 rounded-t-xl relative group" style={{ height: '20%' }}>
-                                    <div className="absolute inset-x-0 bottom-full mb-2 text-center text-xs font-bold text-slate-500 dark:text-slate-300 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Inactive: {stats?.inactiveUsers}</div>
-                                    <div className="w-full h-full bg-slate-300 dark:bg-slate-500 rounded-t-xl transition-all hover:bg-slate-400"></div>
-                                </div>
-                            </div>
-                            <div className="flex justify-between mt-4 px-2">
-                                <span className="text-xs font-bold text-slate-400 uppercase">Active Users</span>
-                                <span className="text-xs font-bold text-slate-400 uppercase">Inactive</span>
+                    <div className="flex items-center gap-4">
+                        <motion.button 
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="p-3 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-400 hover:text-teal-600 shadow-sm transition-all"
+                        >
+                            <Search size={20} />
+                        </motion.button>
+                        <motion.button 
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="bg-teal-600 hover:bg-teal-500 text-white px-6 py-3.5 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-teal-500/20 active:scale-95 transition-all"
+                        >
+                            <Plus size={20} />
+                            <span>Quick Action</span>
+                        </motion.button>
+                    </div>
+                </div>
+
+                {/* STATS GRID */}
+                <motion.div 
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="show"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+                >
+                    <StatCard 
+                        title="Total Users" 
+                        count={users.length} 
+                        icon={Users} 
+                        color="bg-blue-500"
+                        trend="up"
+                        trendValue="12"
+                        navigateTo="users"
+                    />
+                    <StatCard 
+                        title="Departments" 
+                        count={departments.length} 
+                        icon={Building2} 
+                        color="bg-teal-500"
+                        trend="up"
+                        trendValue="4"
+                        navigateTo="departments"
+                    />
+                    <StatCard 
+                        title="Total Employees" 
+                        count={employeeCount} 
+                        icon={Briefcase} 
+                        color="bg-indigo-500"
+                        trend="down"
+                        trendValue="2"
+                        navigateTo="users"
+                    />
+                    <StatCard 
+                        title="Monthly Payroll" 
+                        count={`INR ${totalSalary.toLocaleString()}`} 
+                        icon={TrendingUp} 
+                        color="bg-amber-500"
+                        trend="up"
+                        trendValue="8"
+                    />
+                </motion.div>
+
+                {/* VISUAL BREAK / CHARTS PLACEHOLDER */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 pb-12">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-[3rem] p-10 border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none min-h-[400px] flex flex-col justify-between"
+                    >
+                        <div>
+                            <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Growth Metrics</h2>
+                            <p className="text-slate-400 dark:text-slate-500 font-medium">Real-time engagement and expansion tracking.</p>
+                        </div>
+                        <div className="flex-1 flex items-center justify-center">
+                            <div className="w-full max-w-md h-40 bg-slate-50 dark:bg-slate-900 rounded-[2rem] border border-dashed border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center p-8 text-center bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-800">
+                                <TrendingUp className="text-slate-200 dark:text-slate-700 mb-4" size={48} />
+                                <p className="text-slate-400 dark:text-slate-600 font-bold uppercase tracking-widest text-[10px]">Matrix Visualization Coming Soon</p>
                             </div>
                         </div>
+                        <motion.button 
+                            whileHover={{ x: 5 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="mt-6 flex items-center gap-2 text-teal-600 dark:text-teal-400 font-black uppercase text-[10px] tracking-widest hover:underline"
+                        >
+                            View Comprehensive Report <ChevronRight size={14} />
+                        </motion.button>
+                    </motion.div>
 
-                        <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 sm:p-8 rounded-2xl sm:rounded-3xl shadow-xl text-white flex flex-col justify-between">
-                            <div>
-                                <h3 className="text-xl font-bold mb-2">Company Overview</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">
-                                    Your team is growing. You currently manage {stats?.totalEmployees} employees across {stats?.totalDepartments} separate departments.
-                                </p>
+                    <motion.div 
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="bg-slate-900 dark:bg-teal-600 rounded-[3rem] p-10 text-white flex flex-col justify-between shadow-2xl relative overflow-hidden group"
+                    >
+                        {/* Decorative Background Element */}
+                        <div className="absolute top-0 right-0 -m-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                        
+                        <div className="relative z-10">
+                            <h2 className="text-2xl font-black tracking-tight mb-2">Structure Update</h2>
+                            <p className="text-teal-100/60 font-medium text-sm leading-relaxed">Customize your departmental architecture and streamline leadership workflows.</p>
+                        </div>
+
+                        <div className="relative z-10 space-y-6">
+                            <div className="space-y-4">
+                                {[1, 2, 3].map((i) => (
+                                    <motion.div 
+                                        key={i} 
+                                        whileHover={{ x: 10 }}
+                                        className="flex items-center gap-4 bg-white/10 p-4 rounded-2xl backdrop-blur-md border border-white/5 cursor-pointer"
+                                    >
+                                        <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                                            <Building2 size={16} />
+                                        </div>
+                                        <div className="h-2 w-24 bg-white/20 rounded-full"></div>
+                                    </motion.div>
+                                ))}
                             </div>
-                            <button
-                                onClick={() => useAuthUserStore.setState({ activeSection: "departments" })}
-                                className="mt-8 flex items-center gap-2 text-teal-400 font-bold hover:gap-4 transition-all group"
+                            
+                            <motion.button 
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="w-full bg-white text-teal-900 py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all text-center"
+                                onClick={() => useAuthUserStore.setState({ activeSection: 'departments' })}
                             >
-                                Manage Departments <ArrowRight size={20} className="group-hover:scale-110" />
-                            </button>
+                                Manage Units
+                            </motion.button>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
-            )}
-
-            {/* MANAGER DASHBOARD */}
-            {role === "manager" && (
-                <div className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <StatCard 
-                            icon={Building2} 
-                            label="Department" 
-                            value={stats?.departmentName} 
-                            colorClass="text-blue-600 dark:text-blue-400" 
-                            bgClass="bg-blue-50"
-                            darkBgClass="dark:bg-blue-900/30"
-                            navigateTo="departments"
-                        />
-                        <StatCard 
-                            icon={Users} 
-                            label="Team members" 
-                            value={stats?.employeesCount || 0} 
-                            colorClass="text-teal-600 dark:text-teal-400" 
-                            bgClass="bg-teal-50"
-                            darkBgClass="dark:bg-teal-900/30"
-                        />
-                        <StatCard 
-                            icon={CheckCircle2} 
-                            label="Status" 
-                            value={stats?.isActive ? "Active" : "Inactive"} 
-                            colorClass={stats?.isActive ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"} 
-                            bgClass={stats?.isActive ? "bg-green-50" : "bg-red-50"}
-                            darkBgClass={stats?.isActive ? "dark:bg-green-900/30" : "dark:bg-red-900/30"}
-                        />
-                    </div>
-                </div>
-            )}
-
-            {/* EMPLOYEE DASHBOARD */}
-            {role === "employee" && (
-                <div className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-start gap-6">
-                            <div className="p-4 rounded-3xl bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 shadow-inner">
-                                <Briefcase size={32} />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-bold text-slate-800 dark:text-white">Your Position</h3>
-                                <p className="text-2xl font-black text-teal-600 dark:text-teal-400 mt-1 uppercase tracking-tight">{authUser?.position || 'Not Assigned'}</p>
-                                <p className="text-slate-400 text-xs font-bold uppercase mt-2 tracking-widest">{authUser?.departmentId?.name || 'Waiting for assignment'}</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-start gap-6">
-                            <div className="p-4 rounded-3xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 shadow-inner">
-                                <DollarSign size={32} />
-                            </div>
-                            <div>
-                                <h3 className="text-lg font-bold text-slate-800 dark:text-white">Monthly Salary</h3>
-                                <p className="text-2xl font-black text-blue-600 dark:text-blue-400 mt-1 tracking-tight">${(authUser?.salary || 0).toLocaleString()}</p>
-                                <p className="text-slate-400 text-xs font-bold uppercase mt-2 tracking-widest leading-none">Net Monthly Pay</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
+            </motion.div>
         </div>
     );
 };

@@ -1,175 +1,186 @@
-import { useEffect } from "react";
 import { useAuthUserStore } from "../src/Store/useAuthUserStore";
-import {
-    User,
-    Mail,
-    Shield,
-    Building2,
-    Briefcase,
-    DollarSign,
-    Calendar,
+import { 
+    User, 
+    Mail, 
+    Shield, 
+    Briefcase, 
+    Calendar, 
+    DollarSign, 
+    MapPin,
+    Smartphone,
+    Award,
+    Sparkles
 } from "lucide-react";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1
+        }
+    }
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
 
 const Profile = () => {
-    const { authUser, getProfile } = useAuthUserStore();
+    const { authUser } = useAuthUserStore();
 
-    useEffect(() => {
-        getProfile();
-    }, []);
-
-    if (!authUser) {
-        return (
-            <div className="flex-1 flex items-center justify-center bg-slate-100 dark:bg-slate-950 transition-colors">
-                <div className="animate-pulse text-slate-500 dark:text-slate-400 text-lg">
-                    Loading Profile...
-                </div>
-            </div>
-        );
-    }
-
-    const InfoCard = ({ icon: Icon, label, value }) => (
-        <div className="p-5 rounded-2xl bg-white/60 dark:bg-slate-700/50 backdrop-blur-lg border border-slate-200 dark:border-slate-600 hover:shadow-xl transition-all hover:-translate-y-1">
-            <div className="flex items-center gap-3 mb-2">
-                <Icon size={18} className="text-teal-600 dark:text-teal-400" />
-                <p className="text-xs uppercase text-slate-400">{label}</p>
-            </div>
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                {value || "Not Assigned"}
-            </p>
-        </div>
-    );
+    if (!authUser) return null;
 
     return (
-        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-950 dark:to-slate-900 min-h-screen transition-colors duration-300">
-            <div className="max-w-6xl mx-auto space-y-8">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50/50 dark:bg-slate-950 min-h-full transition-colors duration-300">
+            
+            <motion.div 
+                variants={containerVariants}
+                initial="hidden"
+                animate="show"
+                className="max-w-4xl mx-auto space-y-8"
+            >
+                
+                {/* PROFILE HUB HEADER */}
+                <motion.div 
+                    variants={itemVariants}
+                    className="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 sm:p-12 shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 relative overflow-hidden"
+                >
+                    <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-teal-50 dark:bg-teal-900/20 rounded-full blur-3xl opacity-60"></div>
+                    
+                    <div className="relative flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                        {/* AVATAR with Animation */}
+                        <motion.div 
+                            whileHover={{ rotate: 5, scale: 1.05 }}
+                            className="w-32 h-32 sm:w-40 sm:h-40 rounded-[2.5rem] bg-gradient-to-tr from-teal-500 to-blue-600 flex items-center justify-center text-5xl sm:text-6xl font-black text-white shadow-2xl border-4 border-white dark:border-slate-700"
+                        >
+                            {authUser.name.charAt(0).toUpperCase()}
+                        </motion.div>
 
-                {/* HEADER */}
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white">My Profile</h1>
-                    <p className="text-slate-500 dark:text-slate-400">
-                        Manage your account information
-                    </p>
-                </div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                    {/* LEFT SIDE PROFILE CARD */}
-                    <div className="lg:col-span-1">
-                        <div className="relative bg-gradient-to-br from-teal-500 via-blue-500 to-indigo-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 text-white shadow-2xl overflow-hidden">
-
-                            {/* Glow */}
-                            <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-
-                            <div className="flex flex-col items-center relative z-10">
-                                <div className="w-28 h-28 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 shadow-lg">
-                                    <User size={50} />
-                                </div>
-
-                                <h2 className="text-2xl font-bold mt-4">
+                        <div className="text-center md:text-left flex-1">
+                            <motion.div 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: 0.3 }}
+                                className="flex flex-col md:flex-row md:items-center gap-3"
+                            >
+                                <h1 className="text-3xl sm:text-5xl font-black text-slate-800 dark:text-white tracking-tight">
                                     {authUser.name}
-                                </h2>
-
-                                <p className="text-sm opacity-80">
-                                    {authUser.email}
-                                </p>
-
-                                <div className="flex gap-2 mt-4">
-                                    <span className="px-3 py-1 bg-white/20 rounded-full text-xs uppercase">
-                                        {authUser.role}
-                                    </span>
-
-                                    <span
-                                        className={`px-3 py-1 rounded-full text-xs ${authUser.isActive
-                                                ? "bg-green-400/80"
-                                                : "bg-red-400/80"
-                                            }`}
-                                    >
-                                        {authUser.isActive ? "Active" : "Inactive"}
-                                    </span>
+                                </h1>
+                                <span className="inline-block px-3 py-1 bg-teal-50 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-teal-100 dark:border-teal-700">
+                                    {authUser.role}
+                                </span>
+                            </motion.div>
+                            <p className="text-slate-400 dark:text-slate-500 mt-3 font-medium text-lg leading-relaxed max-w-lg">
+                                Managing system access and departmental operations with strategic oversight.
+                            </p>
+                            
+                            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-8">
+                                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl text-slate-500 dark:text-slate-400 text-sm font-bold border border-slate-100 dark:border-slate-700">
+                                    <MapPin size={16} /> Remote / Global
+                                </div>
+                                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl text-slate-500 dark:text-slate-400 text-sm font-bold border border-slate-100 dark:border-slate-700">
+                                    <Smartphone size={16} /> Encrypted Access
                                 </div>
                             </div>
                         </div>
                     </div>
+                </motion.div>
 
-                    {/* RIGHT SIDE */}
-                    <div className="lg:col-span-2 space-y-6">
-
-                        {/* ACCOUNT INFO */}
-                        <div className="backdrop-blur-xl bg-white/70 dark:bg-slate-800/70 rounded-3xl shadow-xl border border-white/30 dark:border-slate-700">
-                            <div className="p-6 border-b border-slate-200 dark:border-slate-700">
-                                <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
-                                    Account Details
-                                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    {/* ACCOUNT DETAILS */}
+                    <motion.div 
+                        variants={itemVariants}
+                        whileHover={{ y: -5 }}
+                        className="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-xl shadow-slate-100 dark:shadow-none border border-slate-100 dark:border-slate-700"
+                    >
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="p-2.5 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                                <User size={20} />
                             </div>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">Account Essentials</h2>
+                        </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-6">
-                                <InfoCard icon={User} label="Full Name" value={authUser.name} />
-                                <InfoCard icon={Mail} label="Email" value={authUser.email} />
-                                <InfoCard icon={Shield} label="Role" value={authUser.role} />
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between group cursor-pointer">
+                                <div className="flex items-center gap-4">
+                                    <Mail className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors" size={20} />
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Verified Email</span>
+                                </div>
+                                <span className="font-bold text-slate-800 dark:text-slate-200">{authUser.email}</span>
+                            </div>
+                            <div className="flex items-center justify-between group cursor-pointer">
+                                <div className="flex items-center gap-4">
+                                    <Shield className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors" size={20} />
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Security Clearance</span>
+                                </div>
+                                <span className="font-bold text-slate-800 dark:text-slate-200 capitalize">{authUser.role}</span>
+                            </div>
+                            <div className="flex items-center justify-between group cursor-pointer">
+                                <div className="flex items-center gap-4">
+                                    <Calendar className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors" size={20} />
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Onboarding Date</span>
+                                </div>
+                                <span className="font-bold text-slate-800 dark:text-slate-200">
+                                    {new Date(authUser.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}
+                                </span>
+                            </div>
+                        </div>
+                    </motion.div>
+
+                    {/* JOB INFORMATION */}
+                    <motion.div 
+                        variants={itemVariants}
+                        whileHover={{ y: -5 }}
+                        className="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 shadow-xl shadow-slate-100 dark:shadow-none border border-slate-100 dark:border-slate-700"
+                    >
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="p-2.5 rounded-2xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
+                                <Award size={20} />
+                            </div>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">Professional Profile</h2>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div className="flex items-center justify-between group cursor-pointer">
+                                <div className="flex items-center gap-4">
+                                    <Briefcase className="text-slate-300 dark:text-slate-600 group-hover:text-amber-500 transition-colors" size={20} />
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Assigned Post</span>
+                                </div>
+                                <span className="font-bold text-slate-800 dark:text-slate-200 capitalize">
+                                    {authUser.role === "admin" ? "System Admin" : (authUser.position || "Senior Associate")}
+                                </span>
+                            </div>
+                            <div className="flex items-center justify-between group cursor-pointer">
+                                <div className="flex items-center gap-4">
+                                    <DollarSign className="text-slate-300 dark:text-slate-600 group-hover:text-amber-500 transition-colors" size={20} />
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Compensation</span>
+                                </div>
+                                <span className="font-black text-slate-900 dark:text-teal-400">
+                                    {authUser.salary ? `INR ${authUser.salary.toLocaleString()}` : "Confidential"}
+                                </span>
                             </div>
                         </div>
 
-                        {/* EMPLOYEE INFO */}
-                        {authUser.isEmployee && (
-                            <div className="backdrop-blur-xl bg-white/70 dark:bg-slate-800/70 rounded-3xl shadow-xl border border-white/30 dark:border-slate-700">
-                                <div className="p-6 border-b border-slate-200 dark:border-slate-700">
-                                    <h3 className="text-sm font-semibold text-slate-600 dark:text-slate-300 uppercase">
-                                        Job Information
-                                    </h3>
-                                </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-6">
-                                    <InfoCard
-                                        icon={Building2}
-                                        label="Department"
-                                        value={authUser.departmentId?.name}
-                                    />
-                                    <InfoCard
-                                        icon={Briefcase}
-                                        label="Position"
-                                        value={authUser.position}
-                                    />
-                                    <InfoCard
-                                        icon={Calendar}
-                                        label="Joining Date"
-                                        value={
-                                            authUser.joiningDate
-                                                ? new Date(authUser.joiningDate).toLocaleDateString()
-                                                : "Pending"
-                                        }
-                                    />
-                                </div>
-
-                                {/* SALARY HIGHLIGHT */}
-                                <div className="px-6 pb-6">
-                                    <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6 rounded-2xl shadow-lg">
-                                        <p className="text-xs uppercase opacity-80">
-                                            Monthly Salary
-                                        </p>
-                                        <h2 className="text-2xl font-bold mt-1">
-                                            {authUser.salary
-                                                ? `₹${authUser.salary.toLocaleString()}`
-                                                : "Not Disclosed"}
-                                        </h2>
-                                    </div>
-                                </div>
+                        <motion.div 
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.8 }}
+                            className="mt-10 p-5 bg-teal-50 dark:bg-teal-900/20 rounded-2xl border border-teal-100 dark:border-teal-700/50 flex items-start gap-4"
+                        >
+                            <div className="p-2 bg-white dark:bg-slate-800 rounded-xl shadow-sm animate-pulse">
+                                <Sparkles className="text-teal-500" size={18} />
                             </div>
-                        )}
-
-                        {/* ONBOARDING */}
-                        {!authUser.isEmployee && authUser.role !== "admin" && (
-                            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-2xl p-6 border border-amber-200 dark:border-amber-700 shadow-sm">
-                                <h4 className="font-semibold text-amber-800 dark:text-amber-300">
-                                    Onboarding in Progress
-                                </h4>
-                                <p className="text-sm text-amber-700 dark:text-amber-400 mt-1">
-                                    You are not assigned to a department yet.
-                                </p>
-                            </div>
-                        )}
-                    </div>
+                            <p className="text-xs font-bold text-teal-700 dark:text-teal-400 leading-relaxed uppercase tracking-wider">
+                                Your profile is fully synchronized with the central payroll and operations network.
+                            </p>
+                        </motion.div>
+                    </motion.div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 };

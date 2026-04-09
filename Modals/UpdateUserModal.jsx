@@ -11,8 +11,10 @@ import {
     Banknote,
     Activity
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import AnimatedSelect from "../Components/UI/AnimatedSelect";
 
-/** Professional corporate-grade user update modal */
+/** Professional corporate-grade user update modal with Framer Motion */
 const UpdateUserModal = ({ isOpen, onClose, user }) => {
     const { updateUser, getUsers } = useAuthUserStore();
     const [formData, setFormData] = useState({
@@ -23,6 +25,7 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
         isActive: true,
         salary: "",
     });
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -39,36 +42,58 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         const success = await updateUser(user._id, formData);
+        setLoading(false);
         if (success) {
             await getUsers();
             onClose();
         }
     };
 
-    if (!isOpen) return null;
+    const roleOptions = [
+        { value: "employee", label: "Standard Employee" },
+        { value: "manager", label: "Lead Manager" },
+        { value: "admin", label: "System Administrator" },
+    ];
+
+    const statusOptions = [
+        { value: "true", label: "Active" },
+        { value: "false", label: "Inactive" },
+    ];
 
     return (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 transition-all duration-300">
-            <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl relative overflow-hidden animate-in fade-in zoom-in-95 duration-200 border dark:border-slate-800">
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl relative overflow-hidden border dark:border-slate-800 transition-colors"
+            >
                 
                 {/* Header */}
-                <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50 transition-colors">
+                <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50">
                     <div className="flex items-center gap-3">
-                        <div className="p-2 rounded-lg bg-teal-600 text-white shadow-md shadow-teal-900/10">
+                        <motion.div 
+                            whileHover={{ rotate: 15 }}
+                            className="p-2 rounded-lg bg-teal-600 text-white shadow-md shadow-teal-900/10"
+                        >
                             <Edit3 size={18} />
-                        </div>
+                        </motion.div>
                         <div>
                             <h2 className="text-lg font-black text-slate-800 dark:text-white tracking-tight">Modify Identity</h2>
                             <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Update Authorization & Details</p>
                         </div>
                     </div>
-                    <button 
+                    <motion.button 
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
                         onClick={onClose}
                         className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 dark:text-slate-600 transition-colors"
                     >
                         <X size={18} />
-                    </button>
+                    </motion.button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="p-4 sm:p-8 space-y-6 overflow-y-auto max-h-[75vh]">
@@ -76,8 +101,8 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                         {/* Name */}
                         <div className="space-y-1.5 sm:col-span-2">
                             <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Full Identity</label>
-                            <div className="relative">
-                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                            <div className="relative group">
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={16} />
                                 <input
                                     type="text"
                                     placeholder="Enter full name"
@@ -92,8 +117,8 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                         {/* Email */}
                         <div className="space-y-1.5 sm:col-span-2">
                             <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Email Terminal</label>
-                            <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                            <div className="relative group">
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={16} />
                                 <input
                                     type="email"
                                     placeholder="user@ems.corp"
@@ -105,43 +130,31 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                             </div>
                         </div>
 
-                        {/* Role */}
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Authority Level</label>
-                            <div className="relative">
-                                <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                                <select
-                                    className="w-full text-black dark:text-white bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold appearance-none cursor-pointer"
-                                    value={formData.role}
-                                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                                >
-                                    <option value="employee">Standard Employee</option>
-                                    <option value="manager">Lead Manager</option>
-                                    <option value="admin">System Administrator</option>
-                                </select>
-                            </div>
-                        </div>
+                        {/* Role with AnimatedSelect */}
+                        <AnimatedSelect
+                            label="Authority Level"
+                            placeholder="Select Role"
+                            icon={ShieldCheck}
+                            options={roleOptions}
+                            value={formData.role}
+                            onChange={(val) => setFormData({ ...formData, role: val })}
+                        />
 
-                        {/* Password */}
-                        <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Password (Optional)</label>
-                            <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                                <input
-                                    type="password"
-                                    placeholder="Leave empty to keep unchanged"
-                                    className="w-full text-black dark:text-white bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
-                                    value={formData.password}
-                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                />
-                            </div>
-                        </div>
+                        {/* Status with AnimatedSelect */}
+                        <AnimatedSelect
+                            label="Account Status"
+                            placeholder="Select Status"
+                            icon={Activity}
+                            options={statusOptions}
+                            value={formData.isActive ? "true" : "false"}
+                            onChange={(val) => setFormData({ ...formData, isActive: val === "true" })}
+                        />
 
                         {/* Salary */}
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Salary</label>
-                            <div className="relative">
-                                <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                            <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Compensation</label>
+                            <div className="relative group">
+                                <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={16} />
                                 <input
                                     type="number"
                                     placeholder="Base Salary"
@@ -152,41 +165,51 @@ const UpdateUserModal = ({ isOpen, onClose, user }) => {
                             </div>
                         </div>
 
-                        {/* Status (isActive) */}
+                        {/* Password */}
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Account Status</label>
-                            <div className="relative">
-                                <Activity className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                                <select
-                                    className="w-full text-black dark:text-white bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold appearance-none cursor-pointer"
-                                    value={formData.isActive ? "true" : "false"}
-                                    onChange={(e) => setFormData({ ...formData, isActive: e.target.value === "true" })}
-                                >
-                                    <option value="true">Active</option>
-                                    <option value="false">Inactive</option>
-                                </select>
+                            <label className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Password (Optional)</label>
+                            <div className="relative group">
+                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={16} />
+                                <input
+                                    type="password"
+                                    placeholder="Keep empty to skip"
+                                    className="w-full text-black dark:text-white bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 pl-11 pr-4 py-3 rounded-xl focus:outline-none focus:ring-4 focus:ring-teal-500/5 focus:border-teal-500 transition-all text-sm font-bold"
+                                    value={formData.password}
+                                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                />
                             </div>
                         </div>
                     </div>
 
                     <div className="pt-4 flex flex-col sm:flex-row gap-3">
-                        <button
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="submit"
-                            className="flex-1 py-4 rounded-xl bg-slate-900 dark:bg-teal-600 text-teal-400 dark:text-white font-black text-xs tracking-widest uppercase hover:bg-slate-800 dark:hover:bg-teal-500 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group"
+                            disabled={loading}
+                            className="flex-1 py-4 rounded-xl bg-slate-900 dark:bg-teal-600 text-teal-400 dark:text-white font-black text-xs tracking-widest uppercase hover:bg-slate-800 dark:hover:bg-teal-500 transition-all shadow-lg active:scale-95 flex items-center justify-center gap-2 group disabled:opacity-50"
                         >
-                            <UserCheck size={16} />
-                            Save Modifications
-                        </button>
-                        <button
+                            {loading ? (
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                <>
+                                    <UserCheck size={16} />
+                                    Save Modifications
+                                </>
+                            )}
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                             type="button"
                             onClick={onClose}
                             className="flex-1 py-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-bold text-xs tracking-widest uppercase hover:bg-slate-200 dark:hover:bg-slate-700 transition-all active:scale-95"
                         >
                             Dismiss Request
-                        </button>
+                        </motion.button>
                     </div>
                 </form>
-            </div>
+            </motion.div>
         </div>
     );
 };

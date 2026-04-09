@@ -7,10 +7,12 @@ import {
   Loader2,
   Sun,
   Moon,
+  ShieldAlert,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuthUserStore } from "../Store/useAuthUserStore";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -34,14 +36,10 @@ const Login = () => {
   }, [theme]);
 
   const validateForm = () => {
-    if (!formData.email.trim()) return toast.error("Email is required");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      return toast.error("Invalid email");
-    if (!formData.password.trim())
-      return toast.error("Password is required");
-    if (formData.password.length < 4)
-      return toast.error("Password must be at least 4 characters");
-
+    if (!formData.email.trim()) { toast.error("Email is required"); return false; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) { toast.error("Invalid email"); return false; }
+    if (!formData.password.trim()) { toast.error("Password is required"); return false; }
+    if (formData.password.length < 4) { toast.error("Password must be at least 4 characters"); return false; }
     return true;
   };
 
@@ -52,116 +50,198 @@ const Login = () => {
     try {
       setLoading(true);
       const success = await login(formData);
-      if (success) navigate("/home");
+      if (success) {
+        toast.success("Identity Verified");
+        navigate("/home");
+      }
     } catch (error) {
-      toast.error("Login failed");
+      toast.error("Access Denied: Invalid Credentials");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-slate-950 relative overflow-hidden transition-colors duration-500">
 
-      {/* Background glow */}
-      <div className="absolute w-96 h-96 bg-teal-500/20 rounded-full blur-3xl -top-20 -left-20"></div>
-      <div className="absolute w-96 h-96 bg-blue-500/20 rounded-full blur-3xl bottom-0 right-0"></div>
+      {/* Animated Background Elements */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1],
+          rotate: [0, 90, 0],
+          x: [0, 50, 0],
+          y: [0, -50, 0]
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="absolute w-[30rem] h-[30rem] bg-teal-500/10 rounded-full blur-[100px] -top-20 -left-20"
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.3, 1],
+          x: [0, -80, 0],
+          y: [0, 30, 0]
+        }}
+        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        className="absolute w-[25rem] h-[25rem] bg-indigo-500/10 rounded-full blur-[100px] bottom-0 right-0"
+      />
 
       {/* Theme toggle */}
-      <button
+      <motion.button
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.1, rotate: 10 }}
+        whileTap={{ scale: 0.9 }}
         onClick={toggleTheme}
-        className="absolute top-6 right-6 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all z-10"
+        className="absolute top-6 right-6 p-3 rounded-2xl bg-white/5 hover:bg-white/10 text-white border border-white/10 backdrop-blur-md transition-all z-10 shadow-xl"
         title="Toggle theme"
       >
-        {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-      </button>
+        <AnimatePresence mode="wait">
+          {theme === 'light' ? (
+            <motion.div key="moon" initial={{ opacity: 0, rotate: -40 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: 40 }} transition={{ duration: 0.2 }}>
+              <Moon size={20} />
+            </motion.div>
+          ) : (
+            <motion.div key="sun" initial={{ opacity: 0, rotate: 40 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -40 }} transition={{ duration: 0.2 }}>
+              <Sun size={20} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
 
       {/* Card */}
-      <div className="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-8 mx-4">
+      <motion.div 
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+        className="w-full max-w-md backdrop-blur-3xl bg-white/5 border border-white/10 rounded-[2.5rem] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] p-8 sm:p-12 mx-4 relative z-10"
+      >
 
         {/* Header */}
-        <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-white">
-            Welcome Back
-          </h1>
-          <p className="text-sm text-slate-300 mt-2">
-            Login to continue to EMS
-          </p>
+        <div className="mb-10 text-center">
+            <motion.div 
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring" }}
+              className="w-16 h-16 bg-gradient-to-tr from-teal-500 to-emerald-500 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg shadow-teal-500/20"
+            >
+              <ShieldAlert className="text-white" size={32} />
+            </motion.div>
+          <motion.h1 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="text-4xl font-black text-white tracking-tight"
+          >
+            Access Core
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-slate-400 mt-2 font-medium tracking-wide uppercase text-[10px]"
+          >
+            Employee Management Interface
+          </motion.p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-6">
 
           {/* Email */}
-          <div>
-            <label className="text-sm text-slate-300">Email</label>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+          >
+            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Terminal ID</label>
 
-            <div className="relative mt-1">
-              <Mail className="absolute left-3 top-3 size-5 text-slate-400" />
+            <div className="relative mt-2 group">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
 
               <input
                 type="text"
-                placeholder="you@company.com"
-                className="w-full pl-10 pr-3 py-2 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 
-                focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
+                placeholder="identity@ems.system"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-600 
+                focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all font-bold text-sm"
                 value={formData.email}
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
               />
             </div>
-          </div>
+          </motion.div>
 
           {/* Password */}
-          <div>
-            <label className="text-sm text-slate-300">Password</label>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Access Code</label>
 
-            <div className="relative mt-1">
-              <Lock className="absolute left-3 top-3 size-5 text-slate-400" />
+            <div className="relative mt-2 group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
 
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter password"
-                className="w-full pl-10 pr-10 py-2 rounded-xl bg-white/10 border border-white/20 text-white placeholder-slate-400 
-                focus:outline-none focus:ring-2 focus:ring-teal-500 transition-all"
+                placeholder="••••••••"
+                className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-600 
+                focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all font-bold text-sm"
                 value={formData.password}
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
               />
 
-              <button
+              <motion.button
+                whileTap={{ scale: 0.8 }}
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3 text-slate-400 hover:text-white"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
               >
                 {showPassword ? (
-                  <EyeOff className="size-5" />
+                  <EyeOff size={20} />
                 ) : (
-                  <Eye className="size-5" />
+                  <Eye size={20} />
                 )}
-              </button>
+              </motion.button>
             </div>
-          </div>
+          </motion.div>
 
           {/* Button */}
-          <button
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 text-white py-2 rounded-xl font-medium transition-all active:scale-95 disabled:opacity-70"
+            className="w-full flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 text-white py-4 rounded-2xl font-black uppercase text-xs tracking-[0.2em] transition-all shadow-2xl shadow-teal-500/20 disabled:opacity-70 mt-4 active:scale-95"
           >
             {loading ? (
               <>
                 <Loader2 className="animate-spin size-5" />
-                Logging in...
+                Validating...
               </>
             ) : (
-              "Login"
+              "Authorize Access"
             )}
-          </button>
+          </motion.button>
 
         </form>
-      </div>
+      </motion.div>
+
+      {/* Footer Decoration */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="absolute bottom-8 text-slate-600 text-[10px] font-black uppercase tracking-[0.3em]"
+      >
+        Secure Multi-Factor Infrastructure
+      </motion.div>
+
     </div>
   );
 };
