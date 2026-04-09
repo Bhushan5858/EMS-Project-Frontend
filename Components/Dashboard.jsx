@@ -22,7 +22,7 @@ const Dashboard = () => {
     }, []);
 
     const StatCard = ({ icon: Icon, label, value, colorClass = "text-teal-600", bgClass = "bg-teal-50" }) => (
-        <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 group">
+        <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-300 group">
             <div className="flex items-center justify-between mb-4">
                 <div className={`p-3 rounded-2xl ${bgClass} ${colorClass} group-hover:scale-110 transition-transform`}>
                     <Icon size={24} />
@@ -31,8 +31,8 @@ const Dashboard = () => {
                     <TrendingUp size={20} />
                 </div>
             </div>
-            <h2 className="text-sm font-semibold text-slate-500 uppercase tracking-wider">{label}</h2>
-            <p className="text-3xl font-bold text-slate-800 mt-1">{value}</p>
+            <h2 className="text-[10px] sm:text-sm font-semibold text-slate-500 uppercase tracking-wider">{label}</h2>
+            <p className="text-xl sm:text-3xl font-bold text-slate-800 mt-1">{value}</p>
         </div>
     );
 
@@ -48,12 +48,12 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="flex-1 p-8 bg-gradient-to-br from-slate-50 to-slate-100 min-h-full">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-gradient-to-br from-slate-50 to-slate-100 min-h-full">
             
             {/* GREETING */}
             <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">
                         Hello, {authUser?.name?.split(' ')[0]}! 👋
                     </h1>
                     <p className="text-slate-500 mt-1">
@@ -72,8 +72,8 @@ const Dashboard = () => {
 
             {/* ADMIN DASHBOARD */}
             {role === "admin" && (
-                <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="space-y-6 sm:space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                         <StatCard 
                             icon={Users} 
                             label="Total Users" 

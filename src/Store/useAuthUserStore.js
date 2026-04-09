@@ -9,6 +9,9 @@ export const useAuthUserStore = create((set,get) => ({
     token: localStorage.getItem('token') || null,
     users:[],
     activeSection: "dashboard",
+    isMobileSidebarOpen: false,
+
+    toggleMobileSidebar: (isOpen) => set({ isMobileSidebarOpen: isOpen }),
 
 
     getemployees:async()=>{

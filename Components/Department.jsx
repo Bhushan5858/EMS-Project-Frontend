@@ -74,7 +74,7 @@ const Departments = () => {
     }
 
     return (
-        <div className="flex-1 p-8 bg-slate-50/50 min-h-full">
+        <div className="flex-1 p-4 sm:p-6 lg:p-8 bg-slate-50/50 min-h-full">
 
             <div className="max-w-7xl mx-auto space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 
@@ -82,11 +82,11 @@ const Departments = () => {
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                     <div>
                         <div className="flex items-center gap-3">
-                            <div className="p-3 rounded-2xl bg-slate-900 text-white shadow-xl shadow-slate-200">
+                            <div className="p-2.5 sm:p-3 rounded-2xl bg-slate-900 text-white shadow-xl shadow-slate-200">
                                 <LayoutGrid size={24} />
                             </div>
-                            <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
-                                {role === "admin" ? "Department Management" : "My Department"}
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">
+                                {role === "admin" ? "Departments" : "My Department"}
                             </h1>
                         </div>
                         <p className="text-slate-500 mt-2 ml-1">
@@ -111,7 +111,7 @@ const Departments = () => {
                         {role === "admin" && (
                             <button
                                 onClick={() => setIsAddOpen(true)}
-                                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-500 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-teal-100 transition-all active:scale-95 whitespace-nowrap"
+                                className="w-full sm:w-auto flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-teal-100 transition-all active:scale-95 whitespace-nowrap"
                             >
                                 <Plus size={20} />
                                 New Department
@@ -143,7 +143,7 @@ const Departments = () => {
                         {filteredDepartments.map((dept) => (
                             <div
                                 key={dept._id}
-                                className="group relative bg-white rounded-[2.5rem] p-8 border border-slate-200 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-100 transition-all duration-500 overflow-hidden cursor-pointer flex flex-col justify-between h-72"
+                                className="group relative bg-white rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 border border-slate-200 hover:border-teal-500 hover:shadow-2xl hover:shadow-teal-100 transition-all duration-500 overflow-hidden cursor-pointer flex flex-col justify-between h-64 sm:h-72"
                                 onClick={() => handleDepartmentClick(dept._id)}
                             >
                                 {/* Decorative Glow */}

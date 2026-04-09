@@ -61,26 +61,26 @@ const Users = () => {
     };
 
     return (
-        <div className="flex-1 flex flex-col min-h-full items-center p-8 bg-slate-50/50">
+        <div className="flex-1 flex flex-col min-h-full items-center p-4 sm:p-6 lg:p-8 bg-slate-50/50">
 
             <div className="w-full max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
                 {/* HEADER SECTION */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                    <div>
+                <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
                         <div className="flex items-center gap-3">
                             <div className="p-2.5 rounded-2xl bg-teal-600 text-white shadow-lg shadow-teal-200">
                                 <UsersIcon size={24} />
                             </div>
-                            <h1 className="text-3xl font-bold text-slate-800 tracking-tight">System Users</h1>
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 tracking-tight">System Users</h1>
                         </div>
-                        <p className="text-slate-500 mt-1.5 ml-1 select-none">Manage roles, salary, and system access levels.</p>
+                        <p className="text-slate-500 text-sm sm:mt-1.5 select-none">Manage roles and system access.</p>
                     </div>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                         {/* SEARCH BAR */}
-                        <div className="relative group w-full md:w-80">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-black group-focus-within:text-teal-600 transition-colors" size={18} />
+                        <div className="relative group flex-1 sm:w-80">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={18} />
                             <input
                                 type="text"
                                 placeholder="Search by name or email..."
@@ -92,10 +92,11 @@ const Users = () => {
 
                         <button
                             onClick={() => setIsAddModalOpen(true)}
-                            className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg shadow-slate-200 transition-all active:scale-95 whitespace-nowrap"
+                            className="flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg shadow-slate-200 transition-all active:scale-95 whitespace-nowrap"
                         >
                             <UserPlus size={20} />
-                            Add New User
+                            <span className="hidden sm:inline">Add New User</span>
+                            <span className="sm:hidden">Add User</span>
                         </button>
                     </div>
                 </div>

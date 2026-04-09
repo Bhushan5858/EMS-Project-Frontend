@@ -5,10 +5,11 @@ import {
     Building2,
     User,
     LogOut,
+    X,
 } from "lucide-react";
 
 const SideBar = () => {
-    const { authUser, activeSection, logout } = useAuthUserStore();
+    const { authUser, activeSection, logout, toggleMobileSidebar } = useAuthUserStore();
     const role = authUser?.role;
 
     const handleLogout = () => {
@@ -29,11 +30,12 @@ const SideBar = () => {
 
         return (
             <button
-                onClick={() =>
+                onClick={() => {
                     useAuthUserStore.setState({
                         activeSection: item.name.toLowerCase(),
-                    })
-                }
+                    });
+                    toggleMobileSidebar(false);
+                }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group
         ${isActive
                         ? "bg-teal-600/20 text-teal-400 border-l-4 border-teal-500 shadow-inner"
@@ -50,9 +52,17 @@ const SideBar = () => {
         <div className="h-screen w-64 backdrop-blur-xl bg-gray-900 border-r border-white/10 text-white flex flex-col">
 
             {/* HEADER */}
-            <div className="p-6 border-b border-white/10">
-                <h1 className="text-xl font-bold tracking-wide">EMS</h1>
-                <p className="text-xs text-slate-400 capitalize mt-1">{role}</p>
+            <div className="p-6 border-b border-white/10 flex items-center justify-between">
+                <div>
+                    <h1 className="text-xl font-bold tracking-wide">EMS</h1>
+                    <p className="text-xs text-slate-400 capitalize mt-1">{role}</p>
+                </div>
+                <button 
+                    onClick={() => toggleMobileSidebar(false)}
+                    className="lg:hidden p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-xl transition-all"
+                >
+                    <X size={20} />
+                </button>
             </div>
 
             {/* USER INFO */}
