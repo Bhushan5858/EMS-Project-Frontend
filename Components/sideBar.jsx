@@ -8,6 +8,7 @@ import {
     X,
     Sun,
     Moon,
+    Clock,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ const SideBar = () => {
         { name: "Dashboard", translationKey: "common.dashboard", icon: LayoutDashboard, roles: ["admin", "manager", "employee"] },
         { name: "Users", translationKey: "common.users", icon: Users, roles: ["admin"] },
         { name: "Departments", translationKey: "common.departments", icon: Building2, roles: ["admin", "manager", "employee"] },
+        { name: "Attendance", translationKey: "common.attendance", icon: Clock, roles: ["admin", "manager", "employee"] },
         { name: "Profile", translationKey: "common.profile", icon: User, roles: ["admin", "manager", "employee"] },
     ];
 

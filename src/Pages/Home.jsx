@@ -7,6 +7,7 @@ import Users from '../../Components/Users.jsx';
 import Departments from '../../Components/Department.jsx';
 import DepartmentDetail from '../../Components/DepartmentDetail.jsx';
 import Profile from '../../Components/Profile.jsx';
+import Attendance from './Attendance.jsx';
 import { Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -36,6 +37,7 @@ const Home = () => {
       case "departments": return <Departments />;
       case "departmentdetail": return <DepartmentDetail />;
       case "profile": return <Profile />;
+      case "attendance": return <Attendance />;
       default: return <Dashboard />;
     }
   };
