@@ -14,7 +14,9 @@
     "delete": "हटाएं",
     "edit": "संपादित करें",
     "add": "जोड़ें",
+    "today": "आज",
     "loading": "लोड हो रहा है...",
+    "user": "उपयोगकर्ता",
     "attendance": "हाजिरी",
     "days": {
       "sun": "रवि",
@@ -122,6 +124,10 @@
     "dailyDetail": "दैनिक गतिविधि",
     "noPunches": "इस दिन के लिए कोई पंच इवेंट नहीं है।",
     "totalHours": "कुल कार्य समय",
+    "totalActive": "कुल सक्रिय",
+    "completedShifts": "पूर्ण सत्र",
+    "totalRecords": "कुल रिकॉर्ड",
+    "lastEntry": "अंतिम प्रविष्टि",
     "status": {
       "present": "उपस्थित",
       "noData": "कोई डेटा नहीं"

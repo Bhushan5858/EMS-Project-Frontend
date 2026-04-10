@@ -41,7 +41,7 @@ export const useAttendanceStore = create((set, get) => ({
       
       // Also update currentDayRecord if it exists in the fetched list
       const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      today.setUTCHours(0, 0, 0, 0);
       const todayRecord = res.data.find(r => new Date(r.date).getTime() === today.getTime());
       set({ currentDayRecord: todayRecord || null });
 

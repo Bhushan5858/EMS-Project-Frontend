@@ -14,7 +14,9 @@
     "delete": "કાઢી નાખો",
     "edit": "ફેરફાર કરો",
     "add": "ઉમેરો",
+    "today": "આજે",
     "loading": "લોડ થઈ રહ્યું છે...",
+    "user": "વપરાશકર્તા",
     "attendance": "હાજરી",
     "days": {
       "sun": "રવિ",
@@ -122,6 +124,10 @@
     "dailyDetail": "દૈનિક પ્રવૃત્તિ",
     "noPunches": "આ દિવસ માટે કોઈ પંચ ઇવેન્ટ નથી.",
     "totalHours": "કુલ કામનો સમય",
+    "totalActive": "કુલ સક્રિય",
+    "completedShifts": "પૂર્ણ સત્રો",
+    "totalRecords": "કુલ રેકોર્ડ્સ",
+    "lastEntry": "છેલ્લી એન્ટ્રી",
     "status": {
       "present": "હાજર",
       "noData": "માહિતી નથી"

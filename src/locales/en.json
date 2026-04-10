@@ -14,7 +14,9 @@
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
+    "today": "Today",
     "loading": "Loading...",
+    "user": "User",
     "attendance": "Attendance",
     "days": {
       "sun": "Sun",
@@ -122,6 +124,10 @@
     "dailyDetail": "Daily Activity",
     "noPunches": "No punch events for this day.",
     "totalHours": "Total Work Time",
+    "totalActive": "Total Active",
+    "completedShifts": "Completed Shifts",
+    "totalRecords": "Total Records",
+    "lastEntry": "Last Entry",
     "status": {
       "present": "Present",
       "noData": "No Data"

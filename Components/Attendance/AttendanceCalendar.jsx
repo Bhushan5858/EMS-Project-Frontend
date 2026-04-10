@@ -36,9 +36,9 @@ const AttendanceCalendar = ({ records = [], onDayClick }) => {
   const getDayRecord = (day) => {
     return records.find(r => {
       const recordDate = new Date(r.date);
-      return recordDate.getDate() === day && 
-             recordDate.getMonth() === currentDate.getMonth() &&
-             recordDate.getFullYear() === year;
+      return recordDate.getUTCDate() === day && 
+             recordDate.getUTCMonth() === currentDate.getMonth() &&
+             recordDate.getUTCFullYear() === year;
     });
   };
 
@@ -100,7 +100,7 @@ const AttendanceCalendar = ({ records = [], onDayClick }) => {
               key={day}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => onDayClick(record || { date: new Date(year, currentDate.getMonth(), day) })}
+              onClick={() => onDayClick(record || { date: new Date(Date.UTC(year, currentDate.getMonth(), day)) })}
               className={`
                 relative aspect-square rounded-xl sm:rounded-2xl border transition-all flex flex-col items-center justify-center gap-1
                 ${record 

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAttendanceStore } from "../src/Store/useAttendanceStore";
-import { useAuthUserStore } from "../src/Store/useAuthUserStore";
-import PunchControl from "../Components/Attendance/PunchControl";
-import AttendanceCalendar from "../Components/Attendance/AttendanceCalendar";
+import { useAttendanceStore } from "../Store/useAttendanceStore.js";
+import { useAuthUserStore } from "../Store/useAuthUserStore.js";
+import PunchControl from "../../Components/Attendance/PunchControl.jsx";
+import AttendanceCalendar from "../../Components/Attendance/AttendanceCalendar.jsx";
+import GlobalAttendanceBoard from "../../Components/Attendance/GlobalAttendanceBoard.jsx";
 import { useTranslation } from "react-i18next";
 import { 
   X, 
@@ -24,7 +25,8 @@ const DayDetailModal = ({ record, onClose }) => {
     weekday: 'long', 
     year: 'numeric', 
     month: 'long', 
-    day: 'numeric' 
+    day: 'numeric',
+    timeZone: 'UTC'
   });
 
   return (
@@ -140,7 +142,7 @@ const Attendance = () => {
           <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-400">
             <UserIcon size={24} />
           </div>
-          <div className="pr-4">
+          <div className="pr-4 min-w-[120px]">
             <p className="text-xs font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">
                {authUser?.role}
             </p>
@@ -149,17 +151,21 @@ const Attendance = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-1">
-            <PunchControl />
+      {authUser?.role === 'admin' ? (
+        <GlobalAttendanceBoard onUserClick={(record) => setSelectedDay(record)} />
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-1">
+              <PunchControl />
+          </div>
+          <div className="lg:col-span-2">
+              <AttendanceCalendar 
+                records={attendanceRecords} 
+                onDayClick={(day) => setSelectedDay(day)}
+              />
+          </div>
         </div>
-        <div className="lg:col-span-2">
-            <AttendanceCalendar 
-              records={attendanceRecords} 
-              onDayClick={(day) => setSelectedDay(day)}
-            />
-        </div>
-      </div>
+      )}
 
       <AnimatePresence>
         {selectedDay && (
