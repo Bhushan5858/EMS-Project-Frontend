@@ -13,8 +13,11 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuthUserStore } from "../Store/useAuthUserStore";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../Components/LanguageSelector";
 
 const Login = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { login, authUser, theme, toggleTheme } = useAuthUserStore();
 
@@ -107,6 +110,15 @@ const Login = () => {
           )}
         </AnimatePresence>
       </motion.button>
+      
+      {/* Language Selector */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="absolute top-6 right-24 z-10 w-40"
+      >
+        <LanguageSelector />
+      </motion.div>
 
       {/* Card */}
       <motion.div 
@@ -132,7 +144,7 @@ const Login = () => {
             transition={{ delay: 0.3 }}
             className="text-4xl font-black text-white tracking-tight"
           >
-            Access Core
+            {t('login.title')}
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0 }}
@@ -140,7 +152,7 @@ const Login = () => {
             transition={{ delay: 0.4 }}
             className="text-slate-400 mt-2 font-medium tracking-wide uppercase text-[10px]"
           >
-            Employee Management Interface
+            {t('login.subtitle')}
           </motion.p>
         </div>
 
@@ -153,14 +165,14 @@ const Login = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Terminal ID</label>
+            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">{t('login.emailLabel')}</label>
 
             <div className="relative mt-2 group">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
 
               <input
                 type="text"
-                placeholder="identity@ems.system"
+                placeholder={t('login.emailPlaceholder')}
                 className="w-full pl-12 pr-4 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-600 
                 focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all font-bold text-sm"
                 value={formData.email}
@@ -177,7 +189,7 @@ const Login = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.6 }}
           >
-            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">Access Code</label>
+            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-1">{t('login.passwordLabel')}</label>
 
             <div className="relative mt-2 group">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-slate-500 group-focus-within:text-teal-400 transition-colors" />
@@ -222,10 +234,10 @@ const Login = () => {
             {loading ? (
               <>
                 <Loader2 className="animate-spin size-5" />
-                Validating...
+                {t('login.validating')}
               </>
             ) : (
-              "Authorize Access"
+              t('login.button')
             )}
           </motion.button>
 
@@ -239,7 +251,7 @@ const Login = () => {
         transition={{ delay: 1 }}
         className="absolute bottom-8 text-slate-600 text-[10px] font-black uppercase tracking-[0.3em]"
       >
-        Secure Multi-Factor Infrastructure
+        {t('login.footer')}
       </motion.div>
 
     </div>

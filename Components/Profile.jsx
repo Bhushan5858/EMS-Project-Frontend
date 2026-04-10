@@ -12,6 +12,7 @@ import {
     Sparkles
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -29,6 +30,7 @@ const itemVariants = {
 };
 
 const Profile = () => {
+    const { t } = useTranslation();
     const { authUser } = useAuthUserStore();
 
     if (!authUser) return null;
@@ -74,15 +76,15 @@ const Profile = () => {
                                 </span>
                             </motion.div>
                             <p className="text-slate-400 dark:text-slate-500 mt-3 font-medium text-lg leading-relaxed max-w-lg">
-                                Managing system access and departmental operations with strategic oversight.
+                                {t('profile.subtitle')}
                             </p>
                             
                             <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-8">
                                 <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl text-slate-500 dark:text-slate-400 text-sm font-bold border border-slate-100 dark:border-slate-700">
-                                    <MapPin size={16} /> Remote / Global
+                                    <MapPin size={16} /> {t('profile.remoteGlobal')}
                                 </div>
                                 <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl text-slate-500 dark:text-slate-400 text-sm font-bold border border-slate-100 dark:border-slate-700">
-                                    <Smartphone size={16} /> Encrypted Access
+                                    <Smartphone size={16} /> {t('profile.encryptedAccess')}
                                 </div>
                             </div>
                         </div>
@@ -101,28 +103,28 @@ const Profile = () => {
                             <div className="p-2.5 rounded-2xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                                 <User size={20} />
                             </div>
-                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">Account Essentials</h2>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">{t('profile.accountEssentials')}</h2>
                         </div>
 
                         <div className="space-y-6">
                             <div className="flex items-center justify-between group cursor-pointer">
                                 <div className="flex items-center gap-4">
                                     <Mail className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors" size={20} />
-                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Verified Email</span>
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">{t('profile.verifiedEmail')}</span>
                                 </div>
                                 <span className="font-bold text-slate-800 dark:text-slate-200">{authUser.email}</span>
                             </div>
                             <div className="flex items-center justify-between group cursor-pointer">
                                 <div className="flex items-center gap-4">
                                     <Shield className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors" size={20} />
-                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Security Clearance</span>
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">{t('profile.securityClearance')}</span>
                                 </div>
                                 <span className="font-bold text-slate-800 dark:text-slate-200 capitalize">{authUser.role}</span>
                             </div>
                             <div className="flex items-center justify-between group cursor-pointer">
                                 <div className="flex items-center gap-4">
                                     <Calendar className="text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 transition-colors" size={20} />
-                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Onboarding Date</span>
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">{t('profile.onboardingDate')}</span>
                                 </div>
                                 <span className="font-bold text-slate-800 dark:text-slate-200">
                                     {new Date(authUser.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'long', year: 'numeric' })}
@@ -141,26 +143,26 @@ const Profile = () => {
                             <div className="p-2.5 rounded-2xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400">
                                 <Award size={20} />
                             </div>
-                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">Professional Profile</h2>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white">{t('profile.professionalProfile')}</h2>
                         </div>
 
                         <div className="space-y-6">
                             <div className="flex items-center justify-between group cursor-pointer">
                                 <div className="flex items-center gap-4">
                                     <Briefcase className="text-slate-300 dark:text-slate-600 group-hover:text-amber-500 transition-colors" size={20} />
-                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Assigned Post</span>
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">{t('profile.assignedPost')}</span>
                                 </div>
                                 <span className="font-bold text-slate-800 dark:text-slate-200 capitalize">
-                                    {authUser.role === "admin" ? "System Admin" : (authUser.position || "Senior Associate")}
+                                    {authUser.role === "admin" ? t('profile.assignedPost') : (authUser.position || "Senior Associate")}
                                 </span>
                             </div>
                             <div className="flex items-center justify-between group cursor-pointer">
                                 <div className="flex items-center gap-4">
                                     <DollarSign className="text-slate-300 dark:text-slate-600 group-hover:text-amber-500 transition-colors" size={20} />
-                                    <span className="text-slate-500 dark:text-slate-400 font-medium">Compensation</span>
+                                    <span className="text-slate-500 dark:text-slate-400 font-medium">{t('profile.compensation')}</span>
                                 </div>
                                 <span className="font-black text-slate-900 dark:text-teal-400">
-                                    {authUser.salary ? `INR ${authUser.salary.toLocaleString()}` : "Confidential"}
+                                    {authUser.salary ? `INR ${authUser.salary.toLocaleString()}` : t('profile.confidential')}
                                 </span>
                             </div>
                         </div>
@@ -175,7 +177,7 @@ const Profile = () => {
                                 <Sparkles className="text-teal-500" size={18} />
                             </div>
                             <p className="text-xs font-bold text-teal-700 dark:text-teal-400 leading-relaxed uppercase tracking-wider">
-                                Your profile is fully synchronized with the central payroll and operations network.
+                                {t('profile.syncMessage')}
                             </p>
                         </motion.div>
                     </motion.div>

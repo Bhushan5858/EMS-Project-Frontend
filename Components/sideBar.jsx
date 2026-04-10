@@ -10,8 +10,11 @@ import {
     Moon,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "./LanguageSelector";
 
 const SideBar = () => {
+    const { t } = useTranslation();
     const { authUser, activeSection, logout, toggleMobileSidebar, theme, toggleTheme } = useAuthUserStore();
     const role = authUser?.role;
 
@@ -21,10 +24,10 @@ const SideBar = () => {
     };
 
     const menuItems = [
-        { name: "Dashboard", icon: LayoutDashboard, roles: ["admin", "manager", "employee"] },
-        { name: "Users", icon: Users, roles: ["admin"] },
-        { name: "Departments", icon: Building2, roles: ["admin", "manager", "employee"] },
-        { name: "Profile", icon: User, roles: ["admin", "manager", "employee"] },
+        { name: "Dashboard", translationKey: "common.dashboard", icon: LayoutDashboard, roles: ["admin", "manager", "employee"] },
+        { name: "Users", translationKey: "common.users", icon: Users, roles: ["admin"] },
+        { name: "Departments", translationKey: "common.departments", icon: Building2, roles: ["admin", "manager", "employee"] },
+        { name: "Profile", translationKey: "common.profile", icon: User, roles: ["admin", "manager", "employee"] },
     ];
 
     const MenuItem = ({ item }) => {
@@ -57,7 +60,7 @@ const SideBar = () => {
                 )}
                 
                 <Icon className={`size-5 relative z-10 ${isActive ? "text-teal-400" : "group-hover:text-white"}`} />
-                <span className="text-sm font-medium relative z-10">{item.name}</span>
+                <span className="text-sm font-medium relative z-10">{t(item.translationKey)}</span>
             </motion.button>
         );
     };
@@ -112,6 +115,9 @@ const SideBar = () => {
             {/* FOOTER */}
             <div className="p-4 border-t border-white/10 space-y-3">
 
+                {/* LANGUAGE SELECTOR */}
+                <LanguageSelector />
+
                 {/* THEME TOGGLE */}
                 <motion.button
                     whileHover={{ scale: 1.02 }}
@@ -129,7 +135,7 @@ const SideBar = () => {
                                 className="flex items-center gap-2"
                             >
                                 <Moon className="size-4" />
-                                <span>Dark Mode</span>
+                                <span>{t('common.darkMode')}</span>
                             </motion.div>
                         ) : (
                             <motion.div
@@ -140,7 +146,7 @@ const SideBar = () => {
                                 className="flex items-center gap-2"
                             >
                                 <Sun className="size-4" />
-                                <span>Light Mode</span>
+                                <span>{t('common.lightMode')}</span>
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -153,7 +159,7 @@ const SideBar = () => {
                     className="w-full flex items-center justify-center gap-2 bg-red-500/90 hover:bg-red-500 text-white py-2 rounded-xl text-sm transition-all shadow-lg shadow-red-500/10"
                 >
                     <LogOut className="size-4" />
-                    Logout
+                    {t('common.logout')}
                 </motion.button>
 
             </div>

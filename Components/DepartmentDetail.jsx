@@ -5,6 +5,7 @@ import AssignUserModal from "../Modals/AssignUserModal";
 import { useDepartmentStore } from "../src/Store/useDepartmentStore";
 import { useAuthUserStore } from "../src/Store/useAuthUserStore";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { 
     ArrowLeft, 
     User as UserIcon, 
@@ -37,6 +38,7 @@ const itemVariants = {
 };
 
 const DepartmentDetail = () => {
+    const { t } = useTranslation();
 
     const { authUser, getUsers } = useAuthUserStore();
     const { selectedDepartment, isLoading, removeDepartmentUser, deleteDepartment } = useDepartmentStore();
@@ -49,13 +51,13 @@ const DepartmentDetail = () => {
     if (isLoading) return (
         <div className="flex-1 p-8 bg-slate-50 dark:bg-slate-950 min-h-full flex flex-col items-center justify-center transition-colors">
             <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-            <p className="text-slate-500 dark:text-slate-400 font-medium mt-4">Loading department... </p>
+            <p className="text-slate-500 dark:text-slate-400 font-medium mt-4">{t('common.loading')}... </p>
         </div>
     );
     if (!selectedDepartment) return (
         <div className="flex-1 p-8 bg-slate-50 dark:bg-slate-950 min-h-full flex flex-col items-center justify-center transition-colors">
             <AlertCircle className="text-slate-300 dark:text-slate-600 mb-4" size={48} />
-            <p className="text-slate-500 dark:text-slate-400 font-bold">Department Not Found</p>
+            <p className="text-slate-500 dark:text-slate-400 font-bold">{t('common.notFound')}</p>
         </div>
     );
 
@@ -86,7 +88,7 @@ const DepartmentDetail = () => {
                         <div className="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 group-hover:border-teal-200 dark:group-hover:border-teal-600 group-hover:bg-teal-50 dark:group-hover:bg-teal-900/30 transition-all">
                             <ArrowLeft size={18} />
                         </div>
-                        Back to list
+                        {t('departmentDetail.backToDepartments')}
                     </motion.button>
 
                     <div className="flex gap-3 w-full sm:w-auto">
@@ -96,8 +98,8 @@ const DepartmentDetail = () => {
                                 className="flex-1 sm:flex-initial flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-rose-500 hover:text-rose-600 hover:border-rose-200 dark:hover:border-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 px-4 sm:px-5 py-3 rounded-2xl font-bold shadow-sm transition-all active:scale-95"
                                 onClick={() => {
                                     setConfirmData({
-                                        title: "Delete Department",
-                                        message: `Are you sure you want to delete "${department.name}"? This will unassign all users.`,
+                                        title: t('common.delete'),
+                                        message: `${t('common.confirmDelete')} "${department.name}"?`,
                                         onConfirm: async () => {
                                             const success = await deleteDepartment(department._id);
                                             if (success) {
@@ -120,8 +122,8 @@ const DepartmentDetail = () => {
                                 onClick={() => setIsEditOpen(true)}
                             >
                                 <Settings2 size={18} />
-                                <span className="hidden sm:inline">Update Details</span>
-                                <span className="sm:hidden">Update</span>
+                                <span className="hidden sm:inline">{t('common.update')}</span>
+                                <span className="sm:hidden">{t('common.updateShort')}</span>
                             </motion.button>
                         )}
                     </div>
@@ -148,7 +150,7 @@ const DepartmentDetail = () => {
                                     {department.name}
                                 </h1>
                                 <span className="px-2.5 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100 dark:border-emerald-700">
-                                    Active
+                                    {t('users.active')}
                                 </span>
                             </div>
                             <div className="flex flex-wrap items-center gap-3 sm:gap-4 mt-2 sm:mt-3 text-slate-400 font-medium text-sm">
@@ -159,7 +161,7 @@ const DepartmentDetail = () => {
                                 <div className="w-1 h-1 rounded-full bg-slate-200 dark:bg-slate-600"></div>
                                 <div className="flex items-center gap-1.5">
                                     <UsersIcon size={14} />
-                                    {employees.length} Members
+                                    {employees.length} {t('departmentDetail.totalMembers')}
                                 </div>
                             </div>
                         </div>
@@ -179,7 +181,7 @@ const DepartmentDetail = () => {
                             <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
                                 <UserIcon size={20} />
                             </div>
-                            <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">Direct Manager</h2>
+                            <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">{t('departmentDetail.manager')}</h2>
                         </div>
 
                         {manager ? (
@@ -211,7 +213,7 @@ const DepartmentDetail = () => {
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-3 text-slate-400">
                                                 <DollarSign size={16} />
-                                                <span className="text-sm font-medium">Monthly Pay</span>
+                                                <span className="text-sm font-medium">{t('users.pay')}</span>
                                             </div>
                                             <span className="text-sm font-black text-slate-800 dark:text-white">INR {manager.salary?.toLocaleString()}</span>
                                         </div>
@@ -225,8 +227,8 @@ const DepartmentDetail = () => {
                                         className="mt-auto pt-8 text-rose-500 font-bold text-sm hover:text-rose-600 transition-colors flex items-center justify-center gap-2 group"
                                         onClick={() => {
                                             setConfirmData({
-                                                title: "Remove Manager",
-                                                message: `Are you sure you want to remove ${manager.name} from this position?`,
+                                                title: t('departments.noManager'),
+                                                message: `${t('common.confirmDelete')} ${manager.name}?`,
                                                 onConfirm: async () => {
                                                     await removeDepartmentUser(department._id, manager._id);
                                                     await getUsers();
@@ -245,7 +247,7 @@ const DepartmentDetail = () => {
                                 <div className="p-4 rounded-full bg-white dark:bg-slate-700 shadow-sm mb-4 text-slate-300 dark:text-slate-500">
                                     <UserIcon size={32} />
                                 </div>
-                                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm leading-relaxed">No leadership has been assigned to this department yet.</p>
+                                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm leading-relaxed">{t('departments.noManager')}</p>
                                 {role === "admin" && (
                                     <motion.button
                                         whileHover={{ scale: 1.05 }}
@@ -269,7 +271,7 @@ const DepartmentDetail = () => {
                                     <UsersIcon size={20} />
                                 </div>
                                 <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">
-                                    Active Team <span className="text-slate-300 dark:text-slate-600 ml-1">({filteredEmployees.length})</span>
+                                    {t('departmentDetail.membersList')} <span className="text-slate-300 dark:text-slate-600 ml-1">({filteredEmployees.length})</span>
                                 </h2>
                             </div>
 
@@ -295,7 +297,7 @@ const DepartmentDetail = () => {
                                     animate={{ opacity: 1 }}
                                     className="text-center py-20 bg-white dark:bg-slate-800 rounded-[2.5rem] border border-dashed border-slate-200 dark:border-slate-700 font-medium"
                                 >
-                                    <p className="text-slate-400">This team is currently empty.</p>
+                                    <p className="text-slate-400">{t('departmentDetail.noMembers')}</p>
                                 </motion.div>
                             ) : (
                                 <motion.div 

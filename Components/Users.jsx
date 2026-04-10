@@ -4,6 +4,7 @@ import UpdateUserModal from "../Modals/UpdateUserModal.jsx";
 import AddUserModal from "../Modals/addUser.Modal.jsx";
 import DeleteUserModal from "../Modals/DeleteUser.Modal.jsx";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { 
     Search, 
     UserPlus, 
@@ -20,6 +21,7 @@ import {
 } from "lucide-react";
 
 const Users = () => {
+    const { t } = useTranslation();
     const { users, getUsers, deleteUser, authUser } = useAuthUserStore();
     const activeSection = useAuthUserStore((state) => state.activeSection);
     
@@ -130,7 +132,7 @@ const Users = () => {
                                     <div className="flex items-center gap-2 text-sm">
                                         <div className={`w-2 h-2 rounded-full ${user.isActive ? 'bg-emerald-500' : 'bg-rose-500'}`}></div>
                                         <span className={`font-bold text-sm ${user.isActive ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
-                                            {user.isActive ? 'Active' : 'Inactive'}
+                                            {user.isActive ? t('users.active') : t('users.inactive')}
                                         </span>
                                     </div>
                                     {authUser?.role === "admin" && (
@@ -161,7 +163,7 @@ const Users = () => {
                                         onClick={() => { setSelectedUser(user); setIsModalOpen(true); }}
                                         className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 text-blue-600 dark:text-blue-300 text-sm font-bold hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-all shadow-sm"
                                     >
-                                        <Edit3 size={15} /> Edit
+                                        <Edit3 size={15} /> {t('common.edit')}
                                     </motion.button>
                                     <motion.button
                                         whileHover={{ scale: 1.02 }}
@@ -169,7 +171,7 @@ const Users = () => {
                                         onClick={() => { setSelectedUser(user); setIsDeleteModalOpen(true); }}
                                         className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-rose-50 dark:bg-rose-900/30 border border-rose-200 dark:border-rose-700 text-rose-600 dark:text-rose-300 text-sm font-bold hover:bg-rose-100 dark:hover:bg-rose-900/50 transition-all shadow-sm"
                                     >
-                                        <Trash2 size={15} /> Delete
+                                        <Trash2 size={15} /> {t('common.delete')}
                                     </motion.button>
                                 </div>
                             </div>
@@ -199,9 +201,9 @@ const Users = () => {
                             >
                                 <UsersIcon size={24} />
                             </motion.div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">System Users</h1>
+                            <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">{t('users.title')}</h1>
                         </div>
-                        <p className="text-slate-500 dark:text-slate-400 text-sm sm:mt-1.5 select-none">Manage roles and system access.</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm sm:mt-1.5 select-none">{t('users.subtitle')}</p>
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -210,7 +212,7 @@ const Users = () => {
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={18} />
                             <input
                                 type="text"
-                                placeholder="Search by name or email..."
+                                placeholder={t('users.searchPlaceholder')}
                                 className="w-full text-black dark:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 pl-11 pr-4 py-3 rounded-2xl focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all text-sm shadow-sm"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -224,8 +226,8 @@ const Users = () => {
                             className="flex items-center justify-center gap-2 bg-slate-900 dark:bg-teal-600 hover:bg-slate-800 dark:hover:bg-teal-500 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg shadow-slate-200 dark:shadow-none transition-all active:scale-95 whitespace-nowrap"
                         >
                             <UserPlus size={20} />
-                            <span className="hidden sm:inline">Add New User</span>
-                            <span className="sm:hidden">Add User</span>
+                            <span className="hidden sm:inline">{t('users.addUser')}</span>
+                            <span className="sm:hidden">{t('common.add')}</span>
                         </motion.button>
                     </div>
                 </motion.div>
@@ -246,8 +248,8 @@ const Users = () => {
                                     <div className="p-4 rounded-full bg-slate-50 dark:bg-slate-700 text-slate-300 dark:text-slate-500 mb-4">
                                         <Search size={36} />
                                     </div>
-                                    <p className="text-slate-500 dark:text-slate-400 font-medium">No results found.</p>
-                                    <button onClick={() => setSearchTerm("")} className="text-teal-600 dark:text-teal-400 font-bold mt-2 hover:underline">Clear Search</button>
+                                    <p className="text-slate-500 dark:text-slate-400 font-medium">{t('users.noResults')}</p>
+                                    <button onClick={() => setSearchTerm("")} className="text-teal-600 dark:text-teal-400 font-bold mt-2 hover:underline">{t('common.clearSearch')}</button>
                                 </motion.div>
                             ) : (
                                 filteredUsers.map((user) => (
@@ -280,14 +282,14 @@ const Users = () => {
                                     <table className="w-full">
                                         <thead>
                                             <tr className="bg-slate-50/50 dark:bg-slate-900/50 border-b border-slate-100 dark:border-slate-700">
-                                                <th className="px-8 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">User Information</th>
-                                                <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">System Role</th>
+                                                <th className="px-8 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">{t('users.userInfo')}</th>
+                                                <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">{t('users.role')}</th>
                                                 {authUser?.role === "admin" && (
-                                                    <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">Monthly Pay</th>
+                                                    <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">{t('users.pay')}</th>
                                                 )}
-                                                <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">Status</th>
-                                                <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">Employee</th>
-                                                <th className="px-8 py-5 text-right text-xs font-bold text-slate-400 uppercase tracking-widest">Operations</th>
+                                                <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">{t('users.status')}</th>
+                                                <th className="px-6 py-5 text-left text-xs font-bold text-slate-400 uppercase tracking-widest">{t('users.isEmployee')}</th>
+                                                <th className="px-8 py-5 text-right text-xs font-bold text-slate-400 uppercase tracking-widest">{t('common.actions')}</th>
                                             </tr>
                                         </thead>
 
@@ -338,7 +340,7 @@ const Users = () => {
                                                             <div className={`flex items-center gap-2 text-xs font-bold border w-fit px-3 py-1.5 rounded-full shadow-sm
                                                                 ${user.isActive ? "bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-700" : "bg-rose-50 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400 border-rose-100 dark:border-rose-700"}`}>
                                                                 <div className={`w-1.5 h-1.5 rounded-full ${user.isActive ? "bg-emerald-500" : "bg-rose-500"}`}></div>
-                                                                {user.isActive ? "ACTIVE" : "INACTIVE"}
+                                                                {user.isActive ? t('users.active').toUpperCase() : t('users.inactive').toUpperCase()}
                                                             </div>
                                                         </td>
 

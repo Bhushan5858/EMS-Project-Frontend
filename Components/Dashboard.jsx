@@ -14,6 +14,7 @@ import {
     LayoutDashboard
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -72,6 +73,7 @@ const StatCard = ({ title, count, icon: Icon, color, trend, trendValue, navigate
 );
 
 const Dashboard = () => {
+    const { t } = useTranslation();
     const { users, getUsers, authUser } = useAuthUserStore();
     const { departments, getDepartments } = useDepartmentStore();
 
@@ -97,9 +99,9 @@ const Dashboard = () => {
                             <div className="p-3 rounded-2xl bg-slate-900 dark:bg-teal-600 text-white shadow-xl">
                                 <LayoutDashboard size={24} />
                             </div>
-                            <h1 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">Main Console</h1>
+                            <h1 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight">{t('dashboard.title')}</h1>
                         </div>
-                        <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">Greetings, <span className="text-teal-600 dark:text-teal-400 font-bold">{authUser?.name}</span>. Here's your organizational blueprint.</p>
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 font-medium">{t('dashboard.greetings')}, <span className="text-teal-600 dark:text-teal-400 font-bold">{authUser?.name}</span>. {t('dashboard.blueprint')}</p>
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -116,7 +118,7 @@ const Dashboard = () => {
                             className="bg-teal-600 hover:bg-teal-500 text-white px-6 py-3.5 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-teal-500/20 active:scale-95 transition-all"
                         >
                             <Plus size={20} />
-                            <span>Quick Action</span>
+                            <span>{t('dashboard.quickAction')}</span>
                         </motion.button>
                     </div>
                 </div>
@@ -129,7 +131,7 @@ const Dashboard = () => {
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
                 >
                     <StatCard 
-                        title="Total Users" 
+                        title={t('dashboard.totalUsers')} 
                         count={users.length} 
                         icon={Users} 
                         color="bg-blue-500"
@@ -138,7 +140,7 @@ const Dashboard = () => {
                         navigateTo="users"
                     />
                     <StatCard 
-                        title="Departments" 
+                        title={t('common.departments')} 
                         count={departments.length} 
                         icon={Building2} 
                         color="bg-teal-500"
@@ -147,7 +149,7 @@ const Dashboard = () => {
                         navigateTo="departments"
                     />
                     <StatCard 
-                        title="Total Employees" 
+                        title={t('dashboard.totalEmployees')} 
                         count={employeeCount} 
                         icon={Briefcase} 
                         color="bg-indigo-500"
@@ -156,7 +158,7 @@ const Dashboard = () => {
                         navigateTo="users"
                     />
                     <StatCard 
-                        title="Monthly Payroll" 
+                        title={t('dashboard.monthlyPayroll')} 
                         count={`INR ${totalSalary.toLocaleString()}`} 
                         icon={TrendingUp} 
                         color="bg-amber-500"
@@ -175,7 +177,7 @@ const Dashboard = () => {
                         className="lg:col-span-2 bg-white dark:bg-slate-800 rounded-[3rem] p-10 border border-slate-100 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none min-h-[400px] flex flex-col justify-between"
                     >
                         <div>
-                            <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">Growth Metrics</h2>
+                            <h2 className="text-2xl font-black text-slate-800 dark:text-white tracking-tight">{t('dashboard.growthMetrics')}</h2>
                             <p className="text-slate-400 dark:text-slate-500 font-medium">Real-time engagement and expansion tracking.</p>
                         </div>
                         <div className="flex-1 flex items-center justify-center">
@@ -204,7 +206,7 @@ const Dashboard = () => {
                         <div className="absolute top-0 right-0 -m-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
                         
                         <div className="relative z-10">
-                            <h2 className="text-2xl font-black tracking-tight mb-2">Structure Update</h2>
+                            <h2 className="text-2xl font-black tracking-tight mb-2">{t('dashboard.structureUpdate')}</h2>
                             <p className="text-teal-100/60 font-medium text-sm leading-relaxed">Customize your departmental architecture and streamline leadership workflows.</p>
                         </div>
 
@@ -230,7 +232,7 @@ const Dashboard = () => {
                                 className="w-full bg-white text-teal-900 py-4 rounded-2xl font-black uppercase tracking-widest text-xs shadow-xl active:scale-95 transition-all text-center"
                                 onClick={() => useAuthUserStore.setState({ activeSection: 'departments' })}
                             >
-                                Manage Units
+                                {t('dashboard.manageUnits')}
                             </motion.button>
                         </div>
                     </motion.div>

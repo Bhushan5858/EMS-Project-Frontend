@@ -13,6 +13,7 @@ import {
 import AddDepartmentModal from "../Modals/AddDepartmentModal";
 import { useAuthUserStore } from "../src/Store/useAuthUserStore";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -30,6 +31,7 @@ const itemVariants = {
 };
 
 const Departments = () => {
+    const { t } = useTranslation();
     const { departments, getDepartmentDetails, getDepartments, isLoading } = useDepartmentStore();
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
@@ -112,11 +114,11 @@ const Departments = () => {
                                 <LayoutGrid size={24} />
                             </motion.div>
                             <h1 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">
-                                {role === "admin" ? "Departments" : "My Department"}
+                                {role === "admin" ? t('departments.title') : t('departments.myDepartment')}
                             </h1>
                         </div>
                         <p className="text-slate-500 dark:text-slate-400 mt-2 ml-1">
-                            {role === "admin" ? "Organize team structures and track company distribution." : "Real-time updates for your assigned workplace."}
+                            {role === "admin" ? t('departments.subtitleAdmin') : t('departments.subtitleManager')}
                         </p>
                     </div>
 
@@ -126,7 +128,7 @@ const Departments = () => {
                                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-teal-600 transition-colors" size={18} />
                                 <input
                                     type="text"
-                                    placeholder="Search departments..."
+                                    placeholder={t('departments.searchPlaceholder')}
                                     className="w-full text-black dark:text-white bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 pl-11 pr-4 py-3.5 rounded-2xl focus:outline-none focus:ring-4 focus:ring-teal-500/10 focus:border-teal-500 transition-all text-sm shadow-sm"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -142,7 +144,7 @@ const Departments = () => {
                                 className="w-full sm:w-auto flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-500 text-white px-6 py-3.5 rounded-2xl font-bold shadow-lg shadow-teal-100 dark:shadow-none transition-all active:scale-95 whitespace-nowrap"
                             >
                                 <Plus size={20} />
-                                New Department
+                                {t('departments.newDepartment')}
                             </motion.button>
                         )}
                     </div>
@@ -174,7 +176,7 @@ const Departments = () => {
                                     <div className="p-6 rounded-full bg-slate-50 dark:bg-slate-700 text-slate-300 dark:text-slate-500 mb-6">
                                         <Building2 size={64} />
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">No departments found</h3>
+                                    <h3 className="text-xl font-bold text-slate-800 dark:text-white">{t('departments.noDepartments')}</h3>
                                     <p className="text-slate-500 dark:text-slate-400 mt-2">Try adjusting your search criteria or add a new department.</p>
                                     {searchTerm && (
                                         <button onClick={() => setSearchTerm("")} className="mt-4 text-teal-600 dark:text-teal-400 font-bold hover:underline">Reset Search</button>
@@ -214,7 +216,7 @@ const Departments = () => {
                                                     <UserCheck size={14} />
                                                 </div>
                                                 <span className={!dept.managerName ? 'text-xs text-rose-400' : ''}>
-                                                    {dept.managerName ? `Led by ${dept.managerName}` : 'No Manager Assigned'}
+                                                    {dept.managerName ? `${t('departments.ledBy')} ${dept.managerName}` : t('departments.noManager')}
                                                 </span>
                                             </div>
                                         </div>
@@ -232,11 +234,11 @@ const Departments = () => {
                                                         +{dept.employeeCount || 0}
                                                     </div>
                                                 </div>
-                                                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">Team Size</span>
+                                                <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest ml-1">{t('departments.teamSize')}</span>
                                             </div>
                                             
                                             <div className="flex items-center gap-1 text-teal-600 dark:text-teal-400 text-xs font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
-                                                Details <ArrowRight size={14} />
+                                                {t('departments.details')} <ArrowRight size={14} />
                                             </div>
                                         </div>
                                     </motion.div>
